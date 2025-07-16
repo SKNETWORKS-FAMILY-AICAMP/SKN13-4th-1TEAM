@@ -1,4 +1,4 @@
-# SKN13-FINAL-1TEAM
+# SKN13-4TH-1TEAM
 
 # 📄 **프로젝트 기획안**
 
