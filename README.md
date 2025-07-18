@@ -134,7 +134,7 @@
 ## 🛠️ 기술 스택 제안
 
 * **백엔드**: Django
-* **프론트엔드**: React Native
+* **프론트엔드**: Django
 * **LLM 연동**: LangChain, Langgraph + OpenAI
 * **DB**: MySQL + Vector Store (QnA 임베딩용)
 * **크롤링**: Selenium, BeautifulSoup
