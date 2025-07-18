@@ -153,3 +153,36 @@
 
 
 
+```
+chatbot_web/
+├── .idea/
+│   ├── inspectionProfiles/
+│   ├── .gitignore
+│   ├── chatbot_web.iml
+│   ├── modules.xml
+│   └── vcs.xml
+├── chatbot_web/
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── main/
+│   ├── __pycache__/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── staticfiles/
+│   ├── admin/
+│   └── main/
+└── manage.py
+```
