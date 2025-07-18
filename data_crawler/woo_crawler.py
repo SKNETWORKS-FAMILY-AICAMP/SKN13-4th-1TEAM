@@ -54,7 +54,7 @@ def crawl_page(page_num):
 
 def main():
     all_data = []
-    MAX_PAGE = 2  # 원하는 크롤링 페이지 수 조절
+    MAX_PAGE = 190  # 원하는 크롤링 페이지 수 조절
 
     for page in range(1, MAX_PAGE + 1):
         print(f"크롤링 중: 페이지 {page}")
