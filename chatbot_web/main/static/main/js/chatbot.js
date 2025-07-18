@@ -201,31 +201,51 @@ console.log('chatbot.js loaded successfully!');
 const chatForm = document.getElementById('chatForm');
 const userInput = document.getElementById('userInput');
 const chatMain = document.querySelector('.chat-main');
+const fileUpload = document.getElementById('fileUpload');
+const uploadBtn = document.getElementById('uploadBtn');
+
+uploadBtn.addEventListener('click', () => {
+  fileUpload.click(); // 숨겨진 파일 입력 필드 클릭
+});
+
+fileUpload.addEventListener('change', () => {
+  if (fileUpload.files.length > 0) {
+    const fileName = fileUpload.files[0].name;
+    userInput.value = `파일: ${fileName} (전송하려면 메시지를 입력하세요)`;
+  }
+});
 
 chatForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const msg = userInput.value.trim();
-  if (!msg) return;
+  const file = fileUpload.files[0];
 
-  appendMessage('user', msg);
+  if (!msg && !file) return; // 메시지도 파일도 없으면 전송 안 함
+
+  const formData = new FormData();
+  formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+  formData.append('message', msg);
+  if (file) {
+    formData.append('file', file);
+  }
+
+  appendMessage('user', msg || `파일을 업로드했습니다: ${file.name}`);
   userInput.value = '';
+  fileUpload.value = ''; // 파일 입력 필드 초기화
 
   const pathParts = window.location.pathname.split('/').filter(Boolean);
   const lastPart = pathParts.pop();
   const sessionId = /^[0-9]+$/.test(lastPart) ? lastPart : null;
 
+  if (sessionId) {
+    formData.append('session_id', sessionId);
+  }
+
   try {
     const response = await fetch('/api/chat/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      body: JSON.stringify({ 
-        message: msg,
-        session_id: sessionId
-      }),
+      body: formData,
     });
 
     const data = await response.json();

@@ -222,22 +222,50 @@ def get_session_id(request):
     return request.session.session_key
 
 
-def chatbot_response(request, user_message):
+def chatbot_response(request, user_message, uploaded_file_path=None):
     # LangChain 기반 챗봇 응답 생성
     session_id = get_session_id(request)
     app = agent()
     config = generate_config(session_id)
-    state = {"session_id": session_id, "messages": [HumanMessage(content=user_message)]}
+
+    messages = [HumanMessage(content=user_message)]
+
+    initial_state = {"session_id": session_id, "messages": messages}
+
+    if uploaded_file_path: # HWPX가 아닌 다른 파일 처리
+        file_extension = os.path.splitext(uploaded_file_path)[1].lower()
+        if file_extension in ['.txt', '.md']:
+            try:
+                with open(uploaded_file_path, 'r', encoding='utf-8') as f:
+                    file_content = f.read()
+                messages.append(HumanMessage(content=f"[업로드된 파일 내용 - {os.path.basename(uploaded_file_path)}]:\n{file_content}"))
+            except Exception as e:
+                messages.append(HumanMessage(content=f"[업로드된 파일 읽기 오류 - {os.path.basename(uploaded_file_path)}]: {e}"))
+        else:
+            # .hwpx 등 직접 읽을 수 없는 파일의 경우, 절대 경로와 함께 도구 사용을 지시
+            messages.append(HumanMessage(content=f"[업로드된 파일: {os.path.basename(uploaded_file_path)}] 이 파일은 .hwpx 파일이며, 절대 경로 {uploaded_file_path}에 저장되었습니다. 'read_hwpx' 도구를 사용하여 이 파일의 내용을 읽어주세요."))
+
+    state = initial_state
 
     try:
         response = app.invoke(state, config=config)
         return response["messages"][-1].content
     except Exception as e:
+        import traceback
+        traceback.print_exc() # 서버 콘솔에 전체 traceback 출력
         return f"챗봇 오류 발생: {e}"
 
 # ===================================================
 # 🔄 비동기 API (AJAX 기반)
 # ===================================================
+
+from django.core.files.uploadedfile import UploadedFile # 추가
+
+@csrf_exempt
+@login_required
+def chat_api(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST 요청만 허용"}, status=405)
 
 @csrf_exempt
 @login_required
@@ -246,9 +274,10 @@ def chat_api(request):
         return JsonResponse({"error": "POST 요청만 허용"}, status=405)
 
     try:
-        data = json.loads(request.body)
-        user_msg = data.get("message", "")
-        session_id = data.get("session_id")
+        user_msg = request.POST.get("message", "")
+        session_id = request.POST.get("session_id")
+        uploaded_file: UploadedFile = request.FILES.get('file') # 파일 가져오기
+        file_extension = os.path.splitext(uploaded_file.name)[1].lower() if uploaded_file else None # 파일 확장자 정의
 
         session = None
         is_new_session = False
@@ -256,18 +285,36 @@ def chat_api(request):
             session = get_object_or_404(ChatSession, id=session_id, user=request.user)
         else:
             # 새 세션인 경우, 임시 제목으로 생성
-            if user_msg:
+            if user_msg or uploaded_file: # 메시지 또는 파일이 있을 때 세션 생성
                 session = ChatSession.objects.create(user=request.user, title="대화 시작...")
                 is_new_session = True
 
         if not session:
             return JsonResponse({"error": "세션을 찾거나 생성할 수 없습니다."}, status=400)
 
-        # 유저 메시지 저장
-        ChatMessage.objects.create(session=session, role='user', content=user_msg)
+        # 파일 저장 로직 (메시지 저장 전에 수행)
+        file_path = None
+        display_message = user_msg # 기본 메시지 설정
 
-        # AI 응답 생성
-        reply = chatbot_response(request, user_msg)
+        if uploaded_file:
+            file_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'media')
+            os.makedirs(file_dir, exist_ok=True)
+            file_path = os.path.join(file_dir, uploaded_file.name)
+            try:
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+                display_message = f"[파일 업로드: {uploaded_file.name}] {user_msg}"
+
+            except Exception as file_save_error:
+                print(f"[ERROR] Failed to save file: {file_save_error}")
+                return JsonResponse({"error": f"파일 저장 중 오류 발생: {str(file_save_error)}"}, status=500)
+
+        # 유저 메시지 저장
+        ChatMessage.objects.create(session=session, role='user', content=display_message)
+
+        # AI 응답 생성 (파일 정보도 함께 전달)
+        reply = chatbot_response(request, user_msg, file_path if uploaded_file else None) # uploaded_file 전달
 
         # AI 메시지 저장
         ChatMessage.objects.create(session=session, role='assistant', content=reply)
@@ -278,6 +325,8 @@ def chat_api(request):
 
         return JsonResponse(response_data)
     except Exception as e:
+        import traceback
+        traceback.print_exc() # 서버 콘솔에 전체 traceback 출력
         return JsonResponse({"error": f"요청 처리 오류: {str(e)}"}, status=500)
 
 @login_required

@@ -78,8 +78,12 @@
       });
     });
   </script>
-  <form id="chatForm" method="post" class="chat-input-wrapper">
+  <form id="chatForm" method="post" class="chat-input-wrapper" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="file" id="fileUpload" name="file" style="display: none;" />
+    <button type="button" id="uploadBtn" aria-label="파일 업로드">
+        <span class="material-symbols-outlined">add</span>
+    </button>
     <input type="text" id="userInput" name="content" placeholder="삐삐삣" autocomplete="off" />
     <button type="submit" id="sendBtn" aria-label="전송">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
