@@ -1,0 +1,65 @@
+/* chatbot_dialog.css */
+
+/* Confirmation Dialog */
+.confirmation-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Above everything else */
+}
+
+.confirmation-dialog {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(56, 70, 80, 0.2);
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+}
+
+.confirmation-dialog p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+.confirmation-dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirmation-dialog-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.confirmation-dialog-buttons .confirm-yes {
+  background-color: #dc3545; /* Red for delete */
+  color: #fff;
+}
+
+.confirmation-dialog-buttons .confirm-yes:hover {
+  background-color: #c82333;
+}
+
+.confirmation-dialog-buttons .confirm-no {
+  background-color: #6c757d; /* Gray for cancel */
+  color: #fff;
+}
+
+.confirmation-dialog-buttons .confirm-no:hover {
+  background-color: #5a6268;
+}

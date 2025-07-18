@@ -1,0 +1,97 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/chatbot.css' %}">
+  <!-- Marked.js CDN for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="chat-wrapper">
+  <button id="sidebarToggle" class="sidebar-toggle-btn">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+
+  <!-- 왼쪽 사이드바 -->
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <button id="sidebarToggle" class="sidebar-toggle-btn">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+    <a href="{% url 'main:chatbot_new' %}" class="sidebar-item">
+      <span class="material-symbols-outlined">edit</span>
+      <span>새 채팅</span>
+    </a>
+    <div class="sidebar-item" id="toggleSearch" style="cursor: pointer;">
+      <span class="material-symbols-outlined">search</span>
+      <span>채팅 검색</span>
+    </div>
+    <form id="chatSearchForm" class="chat-search-form">
+      <input type="text" id="chatSearchInput" placeholder="검색...">
+      <button type="submit">검색</button>
+    </form>
+    <div class="sidebar-item" id="toggle-history" style="cursor: pointer;">
+      <span class="material-symbols-outlined">chat</span>
+      <span>지난 채팅 목록</span>
+    </div>
+    <div class="sidebar-session-list">
+      <ul class="chat-session-list">
+        {% for s in sessions %}
+          <a href="{% url 'main:chat_bot' s.id %}"
+            class="chat-session-item {% if selected_session and s.id == selected_session.id %}active{% endif %}" data-session-id="{{ s.id }}">
+            <span class="material-symbols-outlined">chat</span>
+            <span class="session-title">{{ s.title|truncatechars:20 }}</span>
+            <span class="material-symbols-outlined delete-session-btn">close</span>
+          </a>
+        {% endfor %}
+      </ul>
+      {% if not sessions %}
+        <p class="chat-session-empty">채팅 기록 없음</p>
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- 오른쪽 메인 챗영역 -->
+<div class="chat-main">
+  <p>Session ID: 
+    {% if request.user.is_authenticated %}
+      {{ request.user.username }}
+    {% else %}
+      {{ request.session.session_key }}
+    {% endif %}
+  </p>
+  <h2 class="chat-title">삐삐삣?</h2>
+    {% if chat_messages %}
+      {% for msg in chat_messages %}
+        <div class="message {{ msg.role }}-message markdown-content">{{ msg.content|safe }}</div>
+      {% endfor %}
+    {% else %}
+      <div>대화 내역이 없습니다.</div>
+    {% endif %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const initialMessages = document.querySelectorAll('.message.markdown-content');
+      initialMessages.forEach(function(messageElement) {
+        messageElement.innerHTML = marked.parse(messageElement.textContent);
+      });
+    });
+  </script>
+  <form id="chatForm" method="post" class="chat-input-wrapper">
+    {% csrf_token %}
+    <input type="text" id="userInput" name="content" placeholder="삐삐삣" autocomplete="off" />
+    <button type="submit" id="sendBtn" aria-label="전송">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24" width="20" height="20">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22 11 13 2 9 22 2z"></path>
+      </svg>
+    </button>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'main/js/chatbot.js' %}"></script>
+{% endblock %}

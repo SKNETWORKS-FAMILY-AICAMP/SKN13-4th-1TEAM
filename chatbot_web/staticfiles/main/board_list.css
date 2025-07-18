@@ -1,0 +1,148 @@
+/* chatbot_web/main/static/main/board_list.css */
+
+body {
+    background: linear-gradient(to right, #f0f2f5, #e0e5ec); /* 부드러운 배경 */
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    color: #343a40;
+}
+
+.container.mt-5 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e9ecef; /* 더 명확한 구분선 */
+}
+
+.board-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0;
+}
+
+.btn-create-post {
+    background-color: #007bff; /* 기본 파란색 */
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+    cursor: pointer;
+}
+
+.btn-create-post:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.post-list {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.post-card {
+    display: block;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #f8f9fa; /* 각 게시글 아이템 구분선 */
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.post-card:last-child {
+    border-bottom: none;
+}
+
+.post-card:hover {
+    background-color: #f8f9fa; /* 호버 시 배경색 변경 */
+    transform: translateY(-2px); /* 미묘하게 위로 뜨는 효과 */
+}
+
+.post-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+}
+
+.post-meta {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-meta span {
+    margin-right: 1rem;
+}
+
+.post-meta span:last-child {
+    margin-right: 0;
+}
+
+.post-card.is-announcement {
+    background-color: #e6f7ff; /* 공지 게시글 배경색 */
+    border-left: 5px solid #007bff; /* 왼쪽 테두리 강조 */
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1); /* 공지 그림자 */
+}
+
+.post-card.is-announcement:hover {
+    background-color: #d9edf7; /* 호버 시 배경색 변경 */
+}
+
+.post-card.is-announcement .post-title {
+    color: #0056b3; /* 공지 제목 색상 */
+}
+
+.like-icon-small {
+    width: 24x; /* 이미지 크기 조정 */
+    height: 24px;
+    vertical-align: middle; /* 텍스트와 세로 정렬 */
+    margin-right: 5px; /* 텍스트와의 간격 */
+}
+
+/* Pagination Styles */
+.pagination {
+    margin-top: 3rem;
+}
+
+.pagination .page-item .page-link {
+    border-radius: 0.3rem;
+    margin: 0 0.15rem;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e9ecef;
+    color: #495057;
+    border-color: #ced4da;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #adb5bd;
+    border-color: #dee2e6;
+}

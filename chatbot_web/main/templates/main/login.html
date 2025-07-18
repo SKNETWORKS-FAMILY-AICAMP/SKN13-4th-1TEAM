@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/login.css' %}?v=20250707">
+{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+  <div class="login-container">
+    <h3 class="text-center fw-bold mb-3">로그인</h3>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post" action="{% url 'main:login' %}">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" name="username" placeholder="아이디" class="input-box" />
+        <input type="password" name="password" placeholder="비밀번호" class="input-box" />
+      </div>
+      <div class="login-actions mt-3">
+        <button type="submit" class="login-btn w-100">로그인</button>
+      </div>
+      <div class="login-links mt-3">
+        <a href="{% url 'main:signup' %}">회원가입</a> |
+        <a href="#">아이디 찾기</a> |
+        <a href="{% url 'main:password_reset' %}">비밀번호 찾기</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

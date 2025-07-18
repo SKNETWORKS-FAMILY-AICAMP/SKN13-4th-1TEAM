@@ -1,0 +1,39 @@
+{% if comment.parent %}
+<div class="nested-comment-card {% if comment.is_deleted_by_admin %}deleted-by-admin{% endif %}" id="comment-{{ comment.id }}" style="margin-left: {{ depth }}px;">
+{% else %}
+<div class="comment-card {% if comment.is_deleted_by_admin %}deleted-by-admin{% endif %}" id="comment-{{ comment.id }}" style="margin-left: {{ depth }}px;">
+{% endif %}
+    <div class="comment-card-body">
+        <div class="d-flex justify-content-between align-items-start">
+            <p class="comment-content mb-0">{% if comment.is_deleted_by_admin %}관리자에 의해 삭제된 글입니다.{% else %}{{ comment.content|linebreaksbr }}{% endif %}
+                <span class="comment-meta-inline"> - {% if comment.is_deleted_by_admin %}관리자{% else %}{{ comment.author_name }}{% endif %} {{ comment.created_at|date:"Y.m.d H:i" }}</span>
+            </p>
+            {% if not comment.is_deleted_by_admin %}
+            <div class="comment-actions d-flex gap-2 flex-shrink-0">
+                {% if not comment.parent %}
+                <button class="btn btn-sm btn-secondary reply-btn" data-comment-id="{{ comment.id }}">답글</button>
+                {% endif %}
+                <button class="btn btn-sm comment-delete-btn" data-comment-id="{{ comment.id }}" data-delete-url="{% url 'main:delete_comment' comment.id %}">삭제</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% for reply in comment.replies.all %}
+        {% include "main/_comment.html" with comment=reply depth=depth|add:20 %}
+    {% endfor %}
+    <div class="reply-form-container" id="reply-form-{{ comment.id }}" style="display: none;">
+        <form class="comment-form reply-form" data-parent-id="{{ comment.id }}">
+            {% csrf_token %}
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control form-control-sm" name="author_name" placeholder="이름" required style="width: 80px;">
+                    <input type="password" class="form-control form-control-sm" name="password" placeholder="비밀번호" required style="width: 80px;">
+                </div>
+                <div class="d-flex align-items-start gap-2">
+                    <textarea class="form-control form-control-sm reply-content-textarea" name="content" placeholder="내용을 입력하세요" required style="flex: 1;"></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm">등록</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

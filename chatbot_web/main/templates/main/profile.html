@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">내 프로필</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>사용자 이름:</strong> {{ user.username }}</p>
+                    <p><strong>닉네임:</strong> {{ user.first_name }}</p>
+                    <p><strong>이메일:</strong> {{ user.email }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-1">여행 나래와 함께한 지 <strong>D+{{ days_since_joined }}</strong> 일</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row text-center">
+                <div class="col-4">
+                    <div class="p-3 border rounded bg-light">
+                        <h5>챗봇 대화 수</h5>
+                        <p class="fs-4 mb-0">{{ chat_session_count }}</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-3 border rounded bg-light">
+                        <h5>작성한 게시글</h5>
+                        <p class="fs-4 mb-0">{{ post_count }}</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-3 border rounded bg-light">
+                        <h5>작성한 댓글</h5>
+                        <p class="fs-4 mb-0">{{ comment_count }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'main:profile_edit' %}" class="btn btn-primary">프로필 수정</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

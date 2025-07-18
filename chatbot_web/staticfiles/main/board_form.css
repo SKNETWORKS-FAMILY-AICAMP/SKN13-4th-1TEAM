@@ -1,0 +1,102 @@
+/* chatbot_web/main/static/main/board_form.css */
+
+body {
+    background: linear-gradient(to right, #f0f2f5, #e0e5ec); /* 미묘한 그라데이션 배경 */
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* 폰트 스택 개선 */
+}
+
+.container.mt-5 {
+    padding-top: 2.5rem; /* 상단 여백 조정 */
+    padding-bottom: 2.5rem; /* 하단 여백 조정 */
+}
+
+.card {
+    border-radius: 1.25rem; /* 더 둥근 모서리 */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 10px 15px rgba(0, 0, 0, 0.1); /* 더 깊고 부드러운 그림자 */
+    border: none; /* 테두리 제거 */
+    overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+    transition: transform 0.3s ease-in-out; /* 카드 자체에 미묘한 트랜지션 */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* 호버 시 약간 위로 뜨는 효과 */
+}
+
+.card-header {
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+    padding: 1.5rem 2rem; /* 패딩 조정 */
+    font-size: 1.8rem; /* 글꼴 크기 조정 */
+    font-weight: 700; /* 글꼴 두께 유지 */
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%); /* 더 세련된 그라데이션 배경 */
+    color: white !important;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 */
+}
+
+.card-body {
+    padding: 2rem; /* 패딩 조정 */
+}
+
+.form-label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 0.5rem; /* 여백 조정 */
+    font-size: 1.05rem; /* 글꼴 크기 조정 */
+}
+
+.form-control {
+    border-radius: 0.75rem;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem; /* 패딩 조정 */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    font-size: 1rem; /* 글꼴 크기 조정 */
+}
+
+.form-control:focus {
+    border-color: #6a11cb; /* 포커스 시 그라데이션 시작 색상 */
+    box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.2); /* 그림자 조정 */
+    outline: none;
+}
+
+.btn {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem; /* 패딩 조정 */
+    font-weight: 600;
+    transition: all 0.3s ease-in-out, background-position 0.3s ease-in-out; /* 0.5s에서 0.3s로 변경 */
+    font-size: 1rem; /* 글꼴 크기 조정 */
+    letter-spacing: 0.5px; /* 글자 간격 조정 */
+    cursor: pointer; /* 마우스 오버 시 포인터 */
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #6a11cb 0%, #2575fc 50%, #6a11cb 100%); /* 두 그라데이션을 하나로 */
+    background-size: 200% 100%; /* 배경 크기 두 배 */
+    background-position: 0% 0%; /* 초기 위치 */
+    border: none;
+    box-shadow: 0 6px 12px rgba(106, 17, 203, 0.3);
+}
+
+.btn-primary:hover {
+    background-position: 100% 0%; /* 호버 시 위치 이동 */
+    box-shadow: 0 8px 16px rgba(106, 17, 203, 0.4);
+    transform: translateY(-4px); /* 더 큰 위로 뜨는 효과 */
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #6c757d 0%, #545b62 50%, #6c757d 100%); /* 두 그라데이션을 하나로 */
+    background-size: 200% 100%; /* 배경 크기 두 배 */
+    background-position: 0% 0%; /* 초기 위치 */
+    border: none;
+    box-shadow: 0 6px 12px rgba(108, 117, 125, 0.3);
+}
+
+.btn-secondary:hover {
+    background-position: 100% 0%; /* 호버 시 위치 이동 */
+    box-shadow: 0 8px 16px rgba(108, 117, 125, 0.4);
+    transform: translateY(-4px); /* 더 큰 위로 뜨는 효과 */
+}
+
+.d-grid.gap-2 {
+    margin-top: 2rem; /* 버튼 위 여백 조정 */
+}

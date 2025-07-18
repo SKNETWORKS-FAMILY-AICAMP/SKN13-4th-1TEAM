@@ -1,0 +1,180 @@
+{% extends 'main/base.html' %}
+{% block extra_head %}
+  <title>추천 여행지 입력</title>
+  <!-- Flatpickr (달력) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="recommendation-input-card">
+      <h2 class="mb-4 text-center">추천 여행지 선택</h2>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <!-- 📅 여행 날짜 선택 -->
+        <div class="mb-3">
+          <label for="travel-dates" class="form-label">여행 기간</label>
+          <input type="text" id="travel-dates" name="travel_dates" class="form-control" placeholder="시작일 ~ 종료일 선택" name="travel-dates">
+        </div>
+
+        <!-- 📍 지역 선택 -->
+        <div class="mb-3">
+          <label class="form-label">여행 지역</label>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <select id="region" name="region" class="form-select">
+                <option value="">-- 시/도 선택 --</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select id="sub-region" name="sub_region" class="form-select" disabled>
+                <option value="">-- 세부 지역 선택 --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👥 인원 수 -->
+        <div class="mb-3 row">
+          <div class="col-md-6">
+            <label for="adults" class="form-label">성인 수</label>
+            <input type="number" id="adults" name="adults" class="form-control" min="1" value="1">
+          </div>
+          <div class="col-md-6">
+            <label for="children" class="form-label">어린이 수</label>
+            <input type="number" id="children" name="children" class="form-control" min="0" value="0">
+          </div>
+        </div>
+
+        <!-- ✅ 추천 버튼 -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">추천 받기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 추천 결과 표시 -->
+  <div class="container mt-5">
+    <h3 class="mb-4 text-center">추천 여행지</h3>
+    {% if recommended_items %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for item in recommended_items %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          {% if item.firstimage %}
+          <img src="{{ item.firstimage }}" class="card-img-top" alt="{{ item.title }}">
+          {% else %}
+          <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="이미지 없음">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ item.title }}</h5>
+            <p class="card-text">{{ item.addr1 }}</p>
+            {% if item.tel %}
+            <p class="card-text"><small class="text-muted">전화: {{ item.tel }}</small></p>
+            {% endif %}
+            <a href="https://search.naver.com/search.naver?query={{ item.title }}" target="_blank" class="btn btn-sm btn-outline-primary">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-muted">아직 추천 여행지가 없습니다. 조건을 선택하고 '추천 받기' 버튼을 눌러주세요.</p>
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+  <!-- ✅ 기능 스크립트 -->
+  <script>
+    const TOUR_API_KEY = "{{ TOUR_API_KEY|escapejs}}";
+    const regionSelect = document.getElementById("region");
+    const subRegionSelect = document.getElementById("sub-region");
+
+    // 📅 달력 초기화
+    flatpickr("#travel-dates", {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      locale: "ko",
+      minDate: "today"
+    });
+
+    // ✅ 시/도 목록 불러오기
+    async function loadProvinces() {
+      const url = `https://apis.data.go.kr/B551011/KorService2/areaCode2?serviceKey=${TOUR_API_KEY}&MobileOS=ETC&MobileApp=MyApp&_type=json&numOfRows=100`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = data.response.body.items.item;
+
+        regionSelect.innerHTML = `<option value="">-- 시/도 선택 --</option>`;
+        items.forEach(region => {
+          const option = document.createElement("option");
+          option.value = region.code;
+          option.textContent = region.name;
+          regionSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("❌ 시/도 목록 로드 실패", err);
+      }
+    }
+
+    // ✅ 세부 지역 목록 불러오기
+    async function loadSubRegions(areaCode) {
+      const url = `https://apis.data.go.kr/B551011/KorService2/areaCode2?serviceKey=${TOUR_API_KEY}&areaCode=${areaCode}&MobileOS=ETC&MobileApp=MyApp&_type=json&numOfRows=100`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = data.response.body.items.item;
+
+        subRegionSelect.innerHTML = `<option value="">-- 세부 지역 선택 --</option>`;
+
+        if (Array.isArray(items)) {
+          items.forEach(sub => {
+            const option = document.createElement("option");
+            option.value = sub.code;
+            option.textContent = sub.name;
+            subRegionSelect.appendChild(option);
+          });
+        } else if (items) {
+          const option = document.createElement("option");
+          option.value = items.code;
+          option.textContent = items.name;
+          subRegionSelect.appendChild(option);
+        }
+
+        subRegionSelect.disabled = false;
+      } catch (err) {
+        console.error("❌ 세부 지역 로드 실패", err);
+      }
+    }
+
+    // ✅ 이벤트 연결
+    regionSelect.addEventListener("change", (e) => {
+      const selectedAreaCode = e.target.value;
+      if (selectedAreaCode) {
+        loadSubRegions(selectedAreaCode);
+      } else {
+        subRegionSelect.innerHTML = `<option value="">-- 세부 지역 선택 --</option>`;
+        subRegionSelect.disabled = true;
+      }
+    });
+
+    // ✅ 페이지 로드시 지역 목록 불러오기
+    loadProvinces();
+  </script>
+{% endblock %}

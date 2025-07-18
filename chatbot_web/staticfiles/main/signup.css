@@ -1,0 +1,121 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+}
+
+.signup-wrapper {
+  margin-top: 20px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.signup-container {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; 
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.input-box {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px !important;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.id-check-row {
+  display: flex;
+  gap: 10px;
+}
+
+.check-btn {
+  padding: 10px 16px;
+  background-color: #6366f1;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.check-btn:hover {
+  background-color: #4f46e5;
+}
+
+.signup-btn {
+  width: 100px;
+  padding: 12px;
+  background-color: #6366f1;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+}
+
+.signup-btn:hover {
+  background-color: #4f46e5;
+}
+
+.message {
+  font-size: 13px;
+  margin-top: 6px;
+  color: #888;
+  display: none; 
+  transition: opacity 0.3s ease;
+}
+
+.message.active {
+  display: block;
+}
+
+/* 모바일 화면 최적화 */
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 20px; /* 패딩 줄이기 */
+    margin: 0 20px; /* 좌우 마진 추가하여 화면 가장자리에 붙지 않도록 */
+    max-width: 100%; /* 모바일에서 최대 너비를 100%로 설정 */
+  }
+  .signup-btn {
+    width: 100%; /* 버튼 너비 100%로 설정 */
+  }
+}

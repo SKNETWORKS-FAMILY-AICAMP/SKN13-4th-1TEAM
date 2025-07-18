@@ -1,0 +1,321 @@
+/* Global Styles */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
+  position: relative; /* Added for body::before */
+}
+
+body {
+    background: linear-gradient(to right, #f0f2f5, #e0e5ec);
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    color: #343a40;
+}
+
+/* Custom Card Component */
+.custom-card {
+  height: 450px;
+}
+
+/* Custom Image Top Component */
+.custom-image-top {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+/* Layout - Sidebar */
+.sidebar-modern {
+  width: 240px;
+  height: 100vh;
+  background-color: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  padding: 24px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #6b7280;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.sidebar-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar-section ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar-section ul li a {
+  display: block;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #374151;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.sidebar-section ul li a:hover {
+  background-color: #e5e7eb;
+}
+
+.sidebar-section ul li.active a {
+  background-color: #e5e7eb;
+  font-weight: 700;
+  color: #111827;
+}
+
+.sidebar-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Layout - Header */
+.top-header-modern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #121F28; /* 평균 남색 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.logo-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+}
+
+.user-menu-container {
+  display: flex;
+  gap: 10px;
+}
+
+.login-button-container {
+  margin-left: auto;
+}
+
+.login-button {
+  padding: 6px 12px;
+  background-color: #1E3A8A;
+  color: white;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background-color: #152238;
+}
+
+.user-menu-container {
+  display: flex;
+  gap: 12px;
+}
+
+.user-icon {
+  font-size: 20px;
+}
+
+.user-link {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.user-link:hover {
+  background-color: #152238;
+}
+
+.top-header-modern .navbar-brand {
+  color: #FFF5E1 !important;
+  transition: color 0.3s ease;
+}
+
+.top-header-modern .navbar-brand:hover {
+  color: #b68a00 !important;
+}
+
+.top-header-modern .nav-link {
+  color: #F0E5D8; /* 기본 글자색 설정 */
+}
+
+.top-header-modern .nav-link.active {
+  color: #4e4637 !important; /* 요청하신 색상 */
+  font-weight: bold !important;
+}
+
+.top-header-modern .nav-link:hover {
+  color: #4e4637 !important; /* 요청하신 색상 */
+  background-color: #152238;
+}
+
+.top-header-modern .navbar-text {
+  color: white !important;
+}
+
+.top-header-modern .btn-outline-primary {
+  color: white;
+  border-color: white;
+}
+
+.top-header-modern .btn-outline-primary:hover {
+  background-color: white;
+  color: #0A1128;
+}
+
+.top-header-modern .btn-outline-secondary {
+  color: white;
+  border-color: white;
+}
+
+.top-header-modern .btn-outline-secondary:hover {
+  background-color: white;
+  color: #0A1128;
+}
+
+/* Main Content */
+.main-content {
+  padding: 60px 20px;
+  max-width: 960px;
+  align-items: center;  /* 가로 중앙 */
+  margin: 0 auto;
+  background-color: transparent; /* Ensure background is transparent */
+}
+
+.main-content h1, .main-content p {
+  color: #000000;
+}
+
+.container.mt-5 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+/* Common Components */
+.bold-link {
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover {
+    font-weight: 550;
+    color: #E5D3B5; /* 요청하신 평균 색상 */
+}
+
+.action-link {
+    color: #007bff; /* Bootstrap primary color */
+    text-decoration: none;
+    margin: 0 5px;
+    transition: font-weight 0.2s ease;
+}
+
+.action-link:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Like Effect (if used broadly) */
+@keyframes likePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.like-pop-effect {
+  animation: likePop 0.3s ease-out;
+}
+
+.likes-count.liked-bold {
+  font-weight: bold;
+}
+
+/* Background Image */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("images/TravelNarae_background.PNG");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.85; /* 옅게 */
+  z-index: -1; /* 다른 요소 뒤로 */
+}
+
+/* Recommendation Input Card */
+.recommendation-input-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+  max-width: 600px; /* Adjust as needed */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Navbar Toggler Icon Color */
+.navbar-toggler-icon {
+  filter: brightness(0) invert(1); /* 아이콘을 흰색으로 변경 */
+}
+
+/* Mobile Navbar Background */
+@media (max-width: 991.98px) { /* Bootstrap's default breakpoint for collapsing navbar */
+  .navbar-collapse.show {
+    background-color: #305070; /* 요청하신 색상으로 변경 */
+    padding: 15px; /* 내부 여백 */
+    border-radius: 5px; /* 둥근 모서리 */
+    margin-top: 10px; /* 상단 여백 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
+  }
+}
+
+/* Material Symbols Icon Styling */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* 아이콘 크기 */
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  color: #F8F4E3; /* 요청하신 색상 */
+}

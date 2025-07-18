@@ -1,0 +1,393 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/board_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="post-detail-card">
+        <div class="post-detail-header">
+            <h2>{{ post.title }}</h2>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="post-meta-info mb-0">작성자: {% if post.is_anonymous %}익명{% else %}{{ post.author.username }}{% endif %} | 작성일: {{ post.created_at|date:"Y.m.d H:i" }}</p>
+                {% if user.is_authenticated %}
+                {% if user == post.author or user.is_superuser %}
+                <div class="d-flex align-items-center gap-2">
+                    {% if user.is_superuser %}
+                    <button id="toggle-announcement-btn" class="action-btn primary">{% if post.is_announcement %}공지 해제{% else %}공지 설정{% endif %}</button>
+                    {% endif %}
+                    <a href="{% url 'main:board_edit' post.pk %}" class="action-btn">수정</a>
+                    <a href="{% url 'main:board_delete' post.pk %}" class="action-btn danger">삭제</a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="post-content-body">
+            <p>{{ post.content|linebreaksbr }}</p>
+        </div>
+        <div class="post-actions">
+            <a href="{% url 'main:board_list' %}" class="action-btn primary">목록으로</a>
+        </div>
+    </div>
+
+    <div class="like-section">
+        <div>
+            {% if user.is_authenticated %}
+            <div class="d-flex flex-column align-items-center">
+                <img id="like-image" src="{% static 'main/images/like_icon.png' %}" alt="Like" class="like-image">
+                <span id="likes-count" class="likes-count">{{ post.likes.count }}</span>
+            </div>
+            {% else %}
+            <div class="d-flex flex-column align-items-center not-logged-in-like-section">
+                <img src="{% static 'main/images/like_icon.png' %}" alt="Like" class="like-image">
+                <span id="likes-count" class="likes-count">{{ post.likes.count }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>댓글 ({{ post.comments.count }})</h3>
+        <div id="comments-list">
+            {% for comment in comments %}
+                {% include "main/_comment.html" with comment=comment depth=0 %}
+            {% empty %}
+            <p>아직 댓글이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="comment-form-section">
+        <h4>댓글 작성</h4>
+        <form id="comment-form" class="comment-form mb-5">
+            {% csrf_token %}
+
+            <!-- 줄 1: 이름 + 비번 -->
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <input type="text" class="form-control" name="author_name" placeholder="이름" required style="width: 150px;">
+                <input type="password" class="form-control" name="password" placeholder="비밀번호" required style="width: 150px;">
+            </div>
+
+            <!-- 줄 2: 내용 textarea + 버튼 -->
+            <div class="d-flex align-items-start gap-3">
+                <textarea class="form-control" name="content" placeholder="내용을 입력하세요" required rows="3" style="flex: 1;"></textarea>
+                <div class="d-flex flex-column gap-2">
+                    <button type="submit" class="btn btn-primary">등록</button>
+                    <button type="button" id="add-comment-and-like" class="btn btn-outline-primary">등록+추천</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% if user.is_authenticated %}
+<script>
+    const IS_SUPERUSER = {{ is_superuser|yesno:"true,false" }};
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM Content Loaded');
+        const likeImage = document.getElementById('like-image');
+        const likesCountSpan = document.getElementById('likes-count');
+
+        // 페이지 로드 시 좋아요 상태에 따라 굵게 표시
+        {% if user.is_authenticated and user in post.likes.all %}
+            likesCountSpan.classList.add('liked-bold');
+        {% endif %}
+
+        if (likeImage) {
+            likeImage.addEventListener('click', function() {
+                // 뿅 효과 추가
+                likeImage.classList.add('like-pop-effect');
+                likeImage.addEventListener('animationend', () => {
+                    likeImage.classList.remove('like-pop-effect');
+                }, { once: true });
+
+                fetch('{% url "main:like_post" post.pk %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked !== undefined) {
+                        likesCountSpan.textContent = data.likes_count;
+                        // 좋아요 상태에 따라 굵게 표시 토글
+                        if (data.liked) {
+                            likesCountSpan.classList.add('liked-bold');
+                        } else {
+                            likesCountSpan.classList.remove('liked-bold');
+                        }
+                    } else if (data.error) {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+    });
+</script>
+{% endif %}
+
+{% if user.is_superuser %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleAnnouncementBtn = document.getElementById('toggle-announcement-btn');
+        if (toggleAnnouncementBtn) {
+            toggleAnnouncementBtn.addEventListener('click', function() {
+                fetch('{% url "main:toggle_announcement" post.pk %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.is_announcement) {
+                            toggleAnnouncementBtn.textContent = '공지 해제';
+                            alert('게시글이 공지로 설정되었습니다.');
+                        } else {
+                            toggleAnnouncementBtn.textContent = '공지 설정';
+                            alert('게시글 공지가 해제되었습니다.');
+                        }
+                    } else if (data.error) {
+                        alert('공지 설정/해제 실패: ' + data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+    });
+</script>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentForm = document.getElementById('comment-form');
+        const commentsList = document.getElementById('comments-list');
+        console.log('commentsList:', commentsList);
+
+        // Add Comment
+        if (commentForm) {
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                addComment(commentForm);
+            });
+
+            const addCommentAndLikeBtn = document.getElementById('add-comment-and-like');
+            if (addCommentAndLikeBtn) {
+                addCommentAndLikeBtn.addEventListener('click', function() {
+                    addComment(commentForm, true);
+                });
+            }
+        }
+
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Initial resize for main comment form textarea
+        const mainCommentTextarea = commentForm.querySelector('textarea[name="content"]');
+        if (mainCommentTextarea) {
+            mainCommentTextarea.addEventListener('input', function() {
+                autoResizeTextarea(this);
+            });
+            autoResizeTextarea(mainCommentTextarea); // Initial resize
+        }
+
+        // Delegate reply button clicks
+        commentsList.addEventListener('click', function(e) {
+            const replyBtn = e.target.closest('.reply-btn');
+            if (replyBtn) {
+                const commentId = replyBtn.dataset.commentId;
+                const replyFormContainer = document.getElementById(`reply-form-${commentId}`);
+                if (replyFormContainer) {
+                    // Hide all other reply forms
+                    document.querySelectorAll('.reply-form-container').forEach(form => {
+                        if (form.id !== `reply-form-${commentId}`) {
+                            form.style.display = 'none';
+                        }
+                    });
+                    // Toggle current reply form
+                    const isHidden = replyFormContainer.style.display === 'none';
+                    replyFormContainer.style.display = isHidden ? 'block' : 'none';
+
+                    if (isHidden) {
+                        // If showing, find textarea and auto-resize
+                        const replyTextarea = replyFormContainer.querySelector('.reply-content-textarea');
+                        if (replyTextarea) {
+                            autoResizeTextarea(replyTextarea);
+                            replyTextarea.focus();
+                        }
+                    }
+                }
+            }
+
+            const deleteButton = e.target.closest('.comment-delete-btn');
+            if (deleteButton) {
+                console.log('Delete button clicked:', deleteButton);
+                if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+                    const commentId = deleteButton.dataset.commentId;
+                    let password = ''; // 비밀번호 변수 초기화
+
+                    // superuser가 아닌 경우에만 비밀번호 프롬프트 표시
+                    if (!IS_SUPERUSER) {
+                        password = prompt('댓글 비밀번호를 입력하세요:');
+                        if (password === null) { // User cancelled prompt
+                            return;
+                        }
+                    }
+
+                    fetch(deleteButton.dataset.deleteUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ password: password })
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            const commentElement = document.getElementById(`comment-${commentId}`);
+                            if (result.is_soft_deleted) {
+                                // 소프트 삭제: 내용 변경 및 버튼 숨기기
+                                commentElement.querySelector('.comment-content').innerHTML = result.new_content;
+                                commentElement.querySelector('.comment-author').innerHTML = '관리자 <small class="comment-date">' + commentElement.querySelector('.comment-date').textContent + '</small>';
+                                commentElement.querySelector('.comment-delete-btn').style.display = 'none';
+                                commentElement.classList.add('deleted-by-admin');
+                            } else {
+                                // 완전 삭제: 요소 제거
+                                commentElement.remove();
+                            }
+                        } else {
+                            alert('댓글 삭제 실패: ' + result.error);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            }
+        });
+
+        // Delegate reply form submissions and textarea input events
+        commentsList.addEventListener('submit', function(e) {
+            if (e.target.classList.contains('reply-form')) {
+                e.preventDefault();
+                addComment(e.target);
+            }
+        });
+
+        commentsList.addEventListener('input', function(e) {
+            if (e.target.classList.contains('reply-content-textarea')) {
+                autoResizeTextarea(e.target);
+            }
+        });
+
+        function addComment(formElement, like = false) {
+            const formData = new FormData(formElement);
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+
+            const parentId = formElement.dataset.parentId;
+            if (parentId) {
+                data['parent_id'] = parentId;
+            }
+
+            fetch('{% url "main:add_comment" post.pk %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': data['csrfmiddlewaretoken'],
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    let newMarginLeft = 0;
+                    if (parentId) {
+                        const parentCommentElement = document.getElementById(`comment-${parentId}`);
+                        if (parentCommentElement) {
+                            const parentMarginLeft = parseInt(parentCommentElement.style.marginLeft) || 0;
+                            newMarginLeft = parentMarginLeft + 20;
+                        }
+                    }
+
+                    // 새 댓글 HTML 생성 및 삽입
+                    const newCommentHtml = `
+                        <div class="${parentId ? 'nested-comment-card' : 'comment-card'} ${result.is_deleted_by_admin ? 'deleted-by-admin' : ''}" id="comment-${result.comment_id}" style="margin-left: ${newMarginLeft}px;">
+                            <div class="comment-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <p class="comment-content mb-0">${result.content.replace(/\n/g, '<br>')}<span class="comment-meta-inline"> - ${result.author_name} ${result.created_at}</span></p>
+                                    <div class="comment-actions d-flex gap-2 flex-shrink-0">
+                                        ${parentId ? '' : `<button class="btn btn-sm btn-secondary reply-btn" data-comment-id="${result.comment_id}">답글</button>`}
+                                        <button class="btn btn-sm comment-delete-btn" data-comment-id="${result.comment_id}" data-delete-url="/api/comments/${result.comment_id}/delete/">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reply-form-container" id="reply-form-${result.comment_id}" style="display: none;"></div>
+                        </div>
+                    `;
+
+                    if (parentId) {
+                        const parentCommentElement = document.getElementById(`comment-${parentId}`);
+                        if (parentCommentElement) {
+                            parentCommentElement.insertAdjacentHTML('beforeend', newCommentHtml);
+                        }
+                    } else {
+                        commentsList.insertAdjacentHTML('beforeend', newCommentHtml);
+                    }
+
+                    formElement.reset();
+                    if (formElement.classList.contains('reply-form')) {
+                        formElement.closest('.reply-form-container').style.display = 'none';
+                    }
+
+                    if (like) {
+                        likePost(true);
+                    }
+                } else {
+                    alert('댓글 작성 실패: ' + result.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function likePost(force = false) {
+            fetch('{% url "main:like_post" post.pk %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ force_like: force })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked !== undefined) {
+                    const likesCountSpan = document.getElementById('likes-count');
+                    likesCountSpan.textContent = data.likes_count;
+                    if (data.liked) {
+                        likesCountSpan.classList.add('liked-bold');
+                    } else {
+                        likesCountSpan.classList.remove('liked-bold');
+                    }
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+{% endblock %}

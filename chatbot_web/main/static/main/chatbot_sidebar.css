@@ -1,0 +1,154 @@
+/* chatbot_sidebar.css */
+
+/* Chat Sidebar */
+.chat-sidebar {
+  position: fixed;
+  left: 0;
+  top: 60px; /* 헤더 높이만큼 아래로 */
+  width: 240px; /* 폭을 원래대로 240px로 되돌림 */
+  height: calc(100vh - 60px);
+  background-color: #f7f7f7;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
+.chat-sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-item > span:not(.material-symbols-outlined) {
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, max-width 0.2s ease-in-out; /* Add max-width transition */
+  opacity: 1;
+  transform: translateX(0);
+  max-width: 200px; /* A large enough value to show all text when expanded */
+  overflow: hidden; /* Hide overflowing content during transition */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.sidebar-item > span.hide-text {
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+  max-width: 0; /* Collapse width to 0 */
+}
+
+.chat-sidebar.collapsed .sidebar-item {
+    padding-left: 3.5px; /* Fixed left padding for the item */
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.chat-sidebar.collapsed .sidebar-item .material-symbols-outlined {
+    margin-right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.sidebar-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2.5px;
+  position: fixed; /* 고정 위치 */
+  top: 70px; /* 헤더 아래 */
+  left: 250px; /* 사이드바 너비 + 여백 (240px + 10px) */
+  z-index: 150; /* 사이드바보다 위에 */
+  transition: left 0.3s ease; /* 부드러운 전환 */
+}
+
+/* Sidebar Items */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0 10px 3.5px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition for smooth hover */
+  text-decoration: none; /* Remove underline */
+}
+
+.sidebar-item:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle dark light effect */
+}
+
+.sidebar-item .material-symbols-outlined {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #333;
+}
+
+/* Chat Session List */
+.chat-session-list {
+  list-style: none;
+  margin: 12px 0 0 0;
+  padding: 0;
+  border-top: 1px solid #ddd;
+}
+
+.chat-session-item {
+  padding: 10px 8px;
+  font-size: 15px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Adjusted transition for consistency */
+  text-decoration: none; /* Remove underline */
+}
+
+.chat-session-item .material-symbols-outlined {
+  font-size: 18px;
+  color: #666;
+}
+
+.chat-session-item:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle dark light effect */
+}
+
+.chat-session-item.active {
+  background-color: #d0e8ff;
+  font-weight: bold;
+}
+
+.chat-session-empty {
+  font-size: 14px;
+  color: #999;
+  margin-top: 10px;
+  padding-left: 4px;
+}
+
+.sidebar-session-list {
+  overflow: hidden;
+  transition: max-height 0.2s ease-in-out;
+}
+
+.chat-sidebar.collapsed .sidebar-item > span:not(.material-symbols-outlined) {
+  display: none;
+}
+
+.delete-session-btn {
+  font-size: 18px;
+  color: #999;
+  margin-left: auto; /* Push to the right */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.chat-session-item:hover .delete-session-btn {
+  opacity: 1; /* Show on hover */
+}

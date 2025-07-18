@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+}
+
+.login-wrapper {
+  margin-top: 20px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.login-container {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} 
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-box {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px !important;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.login-btn {
+  padding: 12px 18px;
+  background-color: #6366f1;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #4f46e5;
+}
+
+.login-links {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.login-links a {
+  text-decoration: none;
+  color: #6366f1;
+  margin: 0 6px;
+  transition: color 0.3s;
+}
+
+.login-links a:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+/* 모바일 화면 최적화 */
+@media (max-width: 768px) {
+  .login-wrapper {
+    margin-top: 50px; /* 상단 마진 줄이기 */
+    padding: 50px 0 0; /* 상단 패딩 줄이고 좌우 패딩 제거 */
+    min-height: auto; /* 최소 높이 자동 조정 */
+  }
+
+  .login-container {
+    padding: 20px; /* 패딩 줄이기 */
+    /* margin: 0 20px; 좌우 마진 제거 */
+    max-width: 100%; /* 모바일에서 최대 너비를 100%로 설정 */
+  }
+}

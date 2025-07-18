@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/board_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="board-header">
+        <h2>게시판</h2>
+        <a href="{% url 'main:board_new' %}" class="btn btn-create-post">새 글 작성</a>
+    </div>
+
+    {% if announcements %}
+    <div class="announcement-list post-list mb-4">
+        {% for post in announcements %}
+        <a href="{% url 'main:board_detail' post.pk %}" class="post-card is-announcement">
+            <div class="post-card-body">
+                <h5 class="post-title">{% if post.likes_count >= 5 %}<img src="{% static 'main/images/like_icon.png' %}" alt="Like" class="like-icon-small"> {% endif %}<span class="badge bg-info me-2">공지</span>{{ post.title }}</h5>
+                <div class="post-meta">
+                    <span>작성자: {% if post.is_anonymous %}익명{% else %}{{ post.author.username }}{% endif %}</span>
+                    <span>{{ post.created_at|date:"Y.m.d H:i" }}</span>
+                    <span>좋아요: {{ post.likes.count }}</span>
+                    <span>댓글: {{ post.comment_count }}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if posts %}
+    <div class="post-list">
+        {% for post in posts %}
+        <a href="{% url 'main:board_detail' post.pk %}" class="post-card">
+            <div class="post-card-body">
+                <h5 class="post-title">{% if post.likes_count >= 5 %}<img src="{% static 'main/images/like_icon.png' %}" alt="Like" class="like-icon-small"> {% endif %}{{ post.title }}</h5>
+                <div class="post-meta">
+                    <span>작성자: {% if post.is_anonymous %}익명{% else %}{{ post.author.username }}{% endif %}</span>
+                    <span>{{ post.created_at|date:"Y.m.d H:i" }}</span>
+                    <span>좋아요: {{ post.likes_count }}</span>
+                    <span>댓글: {{ post.comment_count }}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a></li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <p>게시글이 없습니다.</p>
+    {% endif %}
+</div>
+{% endblock %}

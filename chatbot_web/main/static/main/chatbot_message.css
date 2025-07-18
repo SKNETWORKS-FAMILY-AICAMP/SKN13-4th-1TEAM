@@ -1,0 +1,112 @@
+/* chatbot_message.css */
+
+/* Message Bubbles */
+.message {
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+  color: #121F28; /* 메시지 글자색 설정 */
+}
+
+.user-message {
+  background-color: #e0f7fa;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.assistant-message {
+  background-color: #f0f0f0;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+/* Markdown Rendered Content Styling */
+.message h1,
+.message h2,
+.message h3,
+.message h4,
+.message h5,
+.message h6,
+.message p,
+.message ul,
+.message ol,
+.message li,
+.message blockquote,
+.message th,
+.message td {
+  color: #121F28; /* 마크다운 렌더링된 콘텐츠 글자색 설정 */
+}
+
+.message h1 {
+  font-size: 1.5em; /* Adjust h1 size */
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.message h2 {
+  font-size: 1.3em; /* Adjust h2 size */
+  margin-top: 0.8em;
+  margin-bottom: 0.4em;
+}
+
+.message h3 {
+  font-size: 1.1em; /* Adjust h3 size */
+  margin-top: 0.6em;
+  margin-bottom: 0.3em;
+}
+
+.message h4,
+.message h5,
+.message h6 {
+  font-size: 1em; /* Smaller headers */
+  margin-top: 0.5em;
+  margin-bottom: 0.2em;
+}
+
+.message p,
+.message ul,
+.message ol,
+.message li {
+  font-size: 0.95em; /* Slightly smaller than default text */
+  line-height: 1.5;
+  margin-bottom: 0.5em;
+}
+
+.message pre,
+.message code {
+  font-size: 0.9em; /* Code block font size */
+  background-color: #eee;
+  padding: 0.5em;
+  border-radius: 4px;
+  overflow-x: auto; /* Enable horizontal scrolling for long lines */
+}
+
+.message pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+.message blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1em;
+  margin-left: 0;
+}
+
+.message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+.message th,
+.message td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.message th {
+  background-color: #f2f2f2;
+}
