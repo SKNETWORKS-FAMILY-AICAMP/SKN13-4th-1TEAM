@@ -21,6 +21,9 @@ from llm_tools.get_weather import get_weather_by_location_and_date
 from llm_tools.google_places import get_places_by_keyword_and_location
 from llm_tools.naver_search import NaverSearchTool
 from llm_tools.sEOUl import get_data_seoul
+from llm_tools.edit_hwpx import edit_hwpx
+from llm_tools.read_hwpx import read_hwpx
+
 # 🧾 프롬프트
 from system_prompt import get_system_prompt
 
@@ -75,7 +78,12 @@ def build_chatbot_node(tools):
 def agent():
     # 도구 정의
     naver_tool = NaverSearchTool()
-    tools = [RAG_tool, get_weather_by_location_and_date, naver_tool, get_data_seoul]
+    tools = [RAG_tool,
+             get_weather_by_location_and_date,
+             naver_tool,
+             get_data_seoul,
+             read_hwpx,
+             edit_hwpx]
 
     # LangGraph 정의
     graph = StateGraph(State, is_async=True)
