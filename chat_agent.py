@@ -21,7 +21,7 @@ from llm_tools.get_weather import get_weather_by_location_and_date
 from llm_tools.google_places import get_places_by_keyword_and_location
 from llm_tools.naver_search import NaverSearchTool
 from llm_tools.sEOUl import get_data_seoul
-from llm_tools.edit_hwpx import edit_hwpx
+from llm_tools.edit_hwpx1 import edit_hwpx
 from llm_tools.read_hwpx import read_hwpx
 
 # 🧾 프롬프트
@@ -67,8 +67,7 @@ def build_chatbot_node(tools):
         response = llm_with_tools.invoke(recent_messages)
 
         return {
-            "session_id": state["session_id"],
-            "messages": state["messages"] + [response]  # ✅ 누적 메시지 유지
+            "messages": [response]
         }
     
     return chatbot
@@ -79,7 +78,7 @@ def agent():
     # 도구 정의
     naver_tool = NaverSearchTool()
     tools = [RAG_tool,
-             get_weather_by_location_and_date,
+            #  get_weather_by_location_and_date,
              naver_tool,
              get_data_seoul,
              read_hwpx,

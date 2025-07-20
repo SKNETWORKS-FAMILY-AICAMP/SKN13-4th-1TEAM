@@ -31,19 +31,21 @@
 }
 
 #uploadBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  transition: color 0.2s;
+    background-color: #999; /* 어두운 배경색 */
+    color: white; /* 흰색 아이콘 */
+    border: none;
+    cursor: pointer;
+    width: 40px; /* 너비 설정 */
+    height: 40px; /* 높이 설정 */
+    border-radius: 50%; /* 원형으로 만듦 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
 }
 
 #uploadBtn:hover {
-  color: #007bff;
+    background-color: #bbb; /* 호버 시 약간 밝게 */
 }
 
 #sendBtn {
