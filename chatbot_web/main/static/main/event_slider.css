@@ -1,0 +1,171 @@
+body {
+  padding-top: 80px;
+}
+
+.main-slider {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px;
+  background-color: #f4f4f4;
+  margin-top: 20px;
+}
+
+.carousel {
+  width: 70%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel img {
+  width: 100%;
+  height: auto;
+}
+
+.welcome-box {
+  width: 28%;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-box img {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+/* 주요 서비스 섹션 */
+#main-services {
+  padding: 40px 60px;
+  background-color: #f9f9f9;
+}
+
+#main-services h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.services-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.service-item {
+  flex: 1 1 18%;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.service-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.service-item img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 12px;
+}
+
+.service-item span {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.bottom-section {
+  background-color: #f9f9f9;
+  padding: 30px 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1300px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.content-column {
+  flex: 1;
+  margin-right: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-header h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.more-link {
+  font-size: 14px;
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.content-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.content-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.content-list .category {
+  margin-right: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.category.경제 { color: #008000; }
+.category.환경 { color: #4CAF50; }
+.category.행정 { color: #0077CC; }
+.category.문화 { color: #9933CC; }
+
+.content-list a {
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.chatbot-icon {
+  width: 140px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.chatbot-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.chatbot-icon p {
+  margin-top: 8px;
+  font-size: 14px;
+}
