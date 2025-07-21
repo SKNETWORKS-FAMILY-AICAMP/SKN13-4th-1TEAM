@@ -52,13 +52,14 @@ body {
 
 .services-container {
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 5px;
 }
 
 .service-item {
   flex: 1 1 18%;
+  max-width: 18%;
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
