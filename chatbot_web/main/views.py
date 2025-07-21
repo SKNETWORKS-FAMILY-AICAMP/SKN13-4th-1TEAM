@@ -375,7 +375,7 @@ def delete_chat_session(request, session_id):
         try:
             session = get_object_or_404(ChatSession, id=session_id, user=request.user)
             session.delete()
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', 'redirect_url': reverse_lazy('main:chatbot')}) # 리디렉션 URL 추가
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     return JsonResponse({'status': 'error', 'message': 'DELETE method required'}, status=405)

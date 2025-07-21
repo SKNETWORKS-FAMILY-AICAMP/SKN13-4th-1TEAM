@@ -175,11 +175,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         sessionItem.remove();
                         // If the deleted session was the active one, redirect to a new chat
                         if (sessionItem.classList.contains('active')) {
-                            window.location.href = '/chatbot/'; // Redirect to the view that handles latest/new session
+                            window.location.href = '/chatbot/new/'; // Always redirect to a new chat page
                         }
                     } else {
-                        console.error('Failed to delete session:', response.statusText);
-                        alert('세션 삭제에 실패했습니다.');
+                      console.error('Failed to delete session:', response.statusText);
+                      alert('세션 삭제에 실패했습니다.');
                     }
                 } catch (error) {
                     console.error('Error deleting session:', error);
