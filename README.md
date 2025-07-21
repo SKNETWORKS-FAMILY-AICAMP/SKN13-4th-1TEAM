@@ -10,8 +10,9 @@
 [사용자] ⇄ [Django 웹서버] ⇄ [챗봇 에이전트/LLM] ⇄ [DB/벡터스토어/API]
 ```
 
-- Direstory Contribute
+- Direstory Structure
 
+```python
 SKN13-4th-1TEAM/
 ├── chat_agent.py
 ├── chatbot_web/
@@ -56,7 +57,7 @@ SKN13-4th-1TEAM/
 ├── system_prompt.py
 ├── SYSTEM_ARCHITECTURE.md
 └── vvvvvvvv.py
-
+```
 
 ---
 
@@ -96,16 +97,16 @@ SKN13-4th-1TEAM/
 
 ```mermaid
 graph TD
-  A[사용자] -- 웹/모바일 → B(Django 서버)
-  B -- 챗봇 메시지/파일 업로드 → C(챗봇 에이전트)
-  C -- 질의/명령 → D1(MySQL)
-  C -- 임베딩 검색 → D2(ChromaDB)
-  C -- 외부API 호출 → D3(OpenAI, 공공데이터, 네이버 등)
-  D1 -- 결과 → C
-  D2 -- 결과 → C
-  D3 -- 결과 → C
-  C -- 응답 → B
-  B -- 결과/알림 → A
+  A[User] --> B[Django Server]
+  B -->|Chat Msg/File Upload| C[Chatbot Agent]
+  C -->|Query/Command| D1[MySQL]
+  C -->|Embedding Search| D2[ChromaDB]
+  C -->|External API Call| D3[OpenAI / Public API / Naver]
+  D1 --> C
+  D2 --> C
+  D3 --> C
+  C --> B
+  B -->|Result/Notification| A
 ```
 
 ---
