@@ -142,14 +142,18 @@
   {% endif %}
 
   <!-- widget - Chatbot Floating Button -->
-  <div id="chatbot-button" onclick="toggleChatbot()" style="position: fixed; bottom: 24px; right: 24px; background-color: #007bff; color: white; font-size: 28px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 9999;">
+  <div id="chatbot-button" {% if request.user.is_authenticated %} onclick="toggleChatbot()" {% else %} onclick="goLoginPage()" {% endif %} style="position: fixed; bottom: 24px; right: 24px; background-color: #007bff; color: white; font-size: 28px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 9999;">
     💬
   </div>
   <script>
-  function toggleChatbot() {
-    const chatbot = document.getElementById("chatbot-container");
-    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
-  }
+    function goLoginPage() {
+      window.location.href = "/login/";
+    }
+  
+    function toggleChatbot() {
+      const chatbot = document.getElementById("chatbot-container");
+      chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+    }
   </script>
 {% endblock %}
 
