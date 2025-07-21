@@ -17,6 +17,9 @@ SKN13-4th-1TEAM/
 ├── chat_agent.py
 ├── chatbot_web/
 │   ├── chatbot_web
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── ...
 │   ├── main/
 │   │   ├── __init__.py
 │   │   ├── admin.py
@@ -35,7 +38,12 @@ SKN13-4th-1TEAM/
 │   │   │       ├── base.html
 │   │   │       ├── chatbot.html
 │   │   │       ├── login.html
+│   │   │       ├── js/
+│   │   │       │   ├── chatbot.js
+│   │   │       │   ├── job_page.js
+│   │   │       │   └── ...
 │   │   │       └── ...
+│   │   ├── tests.py
 │   │   ├── urls.py
 │   │   └── views.py
 │   ├── manage.py
@@ -56,7 +64,7 @@ SKN13-4th-1TEAM/
 ├── requirements.txt
 ├── system_prompt.py
 ├── SYSTEM_ARCHITECTURE.md
-└── vvvvvvvv.py
+└── chromadb_dataset.py
 ```
 
 ---
