@@ -64,12 +64,16 @@ def build_chatbot_node(tools):
 
     def chatbot(state: State) -> State:
         recent_messages = state["messages"][-MAX_HISTORY_MESSAGES:]
-        response = llm_with_tools.invoke(recent_messages)
+        
+        # tool_choice 포함된 RunnableConfig 생성
+        config = RunnableConfig(configurable={"tool_choice": "auto"})
+
+        response = llm_with_tools.invoke(recent_messages, config=config)
 
         return {
             "messages": [response]
         }
-    
+
     return chatbot
 
 
