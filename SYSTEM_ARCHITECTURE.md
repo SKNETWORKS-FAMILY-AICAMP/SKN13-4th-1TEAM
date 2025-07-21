@@ -10,54 +10,6 @@
 [사용자] ⇄ [Django 웹서버] ⇄ [챗봇 에이전트/LLM] ⇄ [DB/벡터스토어/API]
 ```
 
-- Direstory Contribute
-
-SKN13-4th-1TEAM/
-├── chat_agent.py
-├── chatbot_web/
-│   ├── chatbot_web
-│   ├── main/
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── forms.py
-│   │   ├── migrations
-│   │   ├── mock_data
-│   │   ├── models.py
-│   │   ├── static/
-│   │   │   └── main/
-│   │   │       ├── board_detail.css
-│   │   │       ├── board_form.css
-│   │   │       └── ...
-│   │   ├── templates/
-│   │   │   └── main
-│   │   │       ├── base.html
-│   │   │       ├── chatbot.html
-│   │   │       ├── login.html
-│   │   │       └── ...
-│   │   ├── urls.py
-│   │   └── views.py
-│   ├── manage.py
-│   └── staticfiles/
-│       ├── admin
-│       └── main
-├── create_engine.py
-├── dataset
-├── Drafts
-├── llm_tools/
-│   ├── chat_history_manager.py
-│   ├── get_weather.py
-│   ├── google_places.py
-│   ├── naver_search.py
-│   ├── retriever.py
-│   └── sEOUl.py
-├── README.md
-├── requirements.txt
-├── system_prompt.py
-├── SYSTEM_ARCHITECTURE.md
-└── vvvvvvvv.py
-
-
 ---
 
 ## 2. 주요 컴포넌트 및 역할
