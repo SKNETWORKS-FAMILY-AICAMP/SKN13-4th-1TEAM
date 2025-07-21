@@ -39,7 +39,10 @@ TOUR_API_KEY = os.getenv("TOUR_API_KEY")
 # ===================================================
 
 def index(request):
-    return render(request, 'main/index.html')
+    latest_session = None
+    if request.user.is_authenticated:
+        latest_session = ChatSession.objects.filter(user=request.user).order_by('-created_at').first()
+    return render(request, 'main/index.html', {'latest_session': latest_session})
 
 
 def board(request):
@@ -266,66 +269,51 @@ def chat_api(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST 요청만 허용"}, status=405)
 
-@csrf_exempt
-@login_required
-def chat_api(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "POST 요청만 허용"}, status=405)
-
     try:
         user_msg = request.POST.get("message", "")
         session_id = request.POST.get("session_id")
-        uploaded_file: UploadedFile = request.FILES.get('file') # 파일 가져오기
-        file_extension = os.path.splitext(uploaded_file.name)[1].lower() if uploaded_file else None # 파일 확장자 정의
+        uploaded_file = request.FILES.get('file')
+
+        if not user_msg and not uploaded_file:
+            return JsonResponse({"error": "메시지 또는 파일이 필요합니다."}, status=400)
 
         session = None
         is_new_session = False
         if session_id:
             session = get_object_or_404(ChatSession, id=session_id, user=request.user)
         else:
-            # 새 세션인 경우, 임시 제목으로 생성
-            if user_msg or uploaded_file: # 메시지 또는 파일이 있을 때 세션 생성
-                session = ChatSession.objects.create(user=request.user, title="대화 시작...")
-                is_new_session = True
+            session = ChatSession.objects.create(user=request.user, title="새로운 대화")
+            is_new_session = True
 
-        if not session:
-            return JsonResponse({"error": "세션을 찾거나 생성할 수 없습니다."}, status=400)
-
-        # 파일 저장 로직 (메시지 저장 전에 수행)
         file_path = None
-        display_message = user_msg # 기본 메시지 설정
+        display_message = user_msg
 
         if uploaded_file:
             file_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'media')
             os.makedirs(file_dir, exist_ok=True)
             file_path = os.path.join(file_dir, uploaded_file.name)
-            try:
-                with open(file_path, 'wb+') as destination:
-                    for chunk in uploaded_file.chunks():
-                        destination.write(chunk)
-                display_message = f"[파일 업로드: {uploaded_file.name}] {user_msg}"
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            display_message = f"[파일 업로드: {uploaded_file.name}] {user_msg}" if user_msg else f"파일 업로드: {uploaded_file.name}"
 
-            except Exception as file_save_error:
-                print(f"[ERROR] Failed to save file: {file_save_error}")
-                return JsonResponse({"error": f"파일 저장 중 오류 발생: {str(file_save_error)}"}, status=500)
-
-        # 유저 메시지 저장
         ChatMessage.objects.create(session=session, role='user', content=display_message)
 
-        # AI 응답 생성 (파일 정보도 함께 전달)
-        reply = chatbot_response(request, user_msg, file_path if uploaded_file else None) # uploaded_file 전달
-
-        # AI 메시지 저장
+        reply = chatbot_response(request, user_msg, file_path)
         ChatMessage.objects.create(session=session, role='assistant', content=reply)
 
         response_data = {"reply": reply}
         if is_new_session:
+            new_title = summarize_message(display_message)
+            session.title = new_title
+            session.save()
             response_data["new_session_id"] = session.id
+            response_data["new_title"] = new_title
 
         return JsonResponse(response_data)
     except Exception as e:
         import traceback
-        traceback.print_exc() # 서버 콘솔에 전체 traceback 출력
+        traceback.print_exc()
         return JsonResponse({"error": f"요청 처리 오류: {str(e)}"}, status=500)
 
 @login_required
@@ -697,3 +685,10 @@ def toggle_announcement(request, pk):
 
         return JsonResponse({'success': True, 'is_announcement': post.is_announcement})
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+
+@login_required
+def chatbot_widget_view(request):
+    return render(request, 'main/chatbot.html')
+

@@ -19,7 +19,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from llm_tools.retriever import RAG_tool
 from llm_tools.get_weather import get_weather_by_location_and_date
 from llm_tools.google_places import get_places_by_keyword_and_location
-from llm_tools.naver_search import NaverSearchTool
+# from llm_tools.naver_search import NaverSearchTool
 from llm_tools.sEOUl import get_data_seoul
 from llm_tools.edit_hwpx1 import edit_hwpx
 from llm_tools.read_hwpx import read_hwpx
@@ -58,7 +58,7 @@ def prompt_node(state: State) -> State:
 
 # ✅ ChatBot 노드 (LLM 호출 + DB 저장)
 def build_chatbot_node(tools):
-    llm = ChatOpenAI(model_name='gpt-4.1')
+    llm = ChatOpenAI(model_name='gpt-4o')
     llm_with_tools = llm.bind_tools(tools)
     MAX_HISTORY_MESSAGES = 10  # 필요 시 조절
 
@@ -76,16 +76,16 @@ def build_chatbot_node(tools):
 # ✅ 에이전트 그래프 정의 함수
 def agent():
     # 도구 정의
-    naver_tool = NaverSearchTool()
+    # naver_tool = NaverSearchTool()
     tools = [RAG_tool,
             #  get_weather_by_location_and_date,
-             naver_tool,
+            #  naver_tool,
              get_data_seoul,
              read_hwpx,
              edit_hwpx]
 
     # LangGraph 정의
-    graph = StateGraph(State, is_async=True)
+    graph = StateGraph(State)
 
     # 노드 등록
     graph.add_node("prompt", prompt_node)

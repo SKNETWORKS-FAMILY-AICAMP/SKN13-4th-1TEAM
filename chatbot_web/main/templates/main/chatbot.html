@@ -1,13 +1,25 @@
-{% extends 'main/base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/chatbot.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
 
-{% block extra_head %}
-  <link rel="stylesheet" href="{% static 'main/chatbot.css' %}">
-  <!-- Marked.js CDN for Markdown parsing -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-{% endblock %}
+{% if not request.user.is_authenticated %}
+  <script>
+    if (window.self !== window.top) {
+      window.top.location.href = "{% url 'main:login' %}?next={{ request.path }}";
+    } else {
+      window.location.href = "{% url 'main:login' %}?next={{ request.path }}";
+    }
+  </script>
+{% endif %}
 
-{% block content %}
 <div class="chat-wrapper">
   <button id="sidebarToggle" class="sidebar-toggle-btn">
     <span class="material-symbols-outlined">menu</span>
@@ -74,7 +86,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const initialMessages = document.querySelectorAll('.message.markdown-content');
       initialMessages.forEach(function(messageElement) {
-        messageElement.innerHTML = marked.parse(messageElement.textContent);
+        messageElement.innerHTML = marked.parse(messageElement.innerHTML);
       });
     });
   </script>
@@ -94,8 +106,8 @@
     </button>
   </form>
 </div>
-{% endblock %}
 
-{% block extra_scripts %}
-  <script src="{% static 'main/js/chatbot.js' %}"></script>
-{% endblock %}
+<script src="{% static 'main/js/chatbot.js' %}"></script>
+
+</body>
+</html>

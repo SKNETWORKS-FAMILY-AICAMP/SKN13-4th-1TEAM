@@ -14,6 +14,8 @@ from mcp.client.stdio import stdio_client
 # 환경 변수 로드
 load_dotenv()
 SMITHERY_API_KEY = os.getenv("SMITHERY_API_KEY")
+if not SMITHERY_API_KEY:
+    raise ValueError("SMITHERY_API_KEY 환경변수가 설정되어 있지 않습니다. .env 파일 또는 시스템 환경변수를 확인하세요.")
 class NaverSearchInput(BaseModel):
     """네이버 검색 입력 스키마"""
     query: str = Field(description="검색어")

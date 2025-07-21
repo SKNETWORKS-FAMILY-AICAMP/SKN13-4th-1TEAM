@@ -8,6 +8,7 @@ app_name = 'main'
 urlpatterns = [
     path('', views.index, name='home'),
     path('chatbot/', views.chatbot_redirect_to_latest_session, name='chatbot'),
+    path('chatbot/widget/', views.chatbot_widget_view, name='chatbot_widget'),
     path('chatbot/new/', views.chat_bot_view, name='chatbot_new'),
     path('login/', views.login_view, name='login'),
     path('api/chat/', views.chat_api, name='chat_api'),
@@ -23,6 +24,7 @@ urlpatterns = [
     path('api/notifications/<int:notification_id>/read/', views.mark_notification_as_read, name='mark_notification_as_read'),
     path('recommendation/', views.recommendation, name='recommendation'),
     path('map/', views.map_view, name='map'),
+    path('chatbot/<int:session_id>/', views.chat_bot_view, name='chat_bot'),
 
     # 비밀번호 재설정 URL
     path('password_reset/', auth_views.PasswordResetView.as_view(

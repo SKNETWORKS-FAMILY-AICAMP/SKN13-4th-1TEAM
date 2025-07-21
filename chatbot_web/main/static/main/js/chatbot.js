@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const isIframe = window.self !== window.top;
     const chatSearchForm = document.getElementById('chatSearchForm');
     const chatSearchInput = document.getElementById('chatSearchInput');
     const toggleSearchDiv = document.getElementById('toggleSearch');
 
-    if (toggleSearchDiv) {
+    if (!isIframe && toggleSearchDiv && chatSearchForm) {
         toggleSearchDiv.addEventListener('click', () => {
             chatSearchForm.classList.toggle('visible');
         });
@@ -39,60 +40,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const sessionList = document.querySelector('.sidebar-session-list');
 
     const textSpans = document.querySelectorAll('.sidebar-item > span:not(.material-symbols-outlined)');
+    
+    if (!isIframe && sidebarToggle && chatSidebar && chatWrapper) {
+      sidebarToggle.addEventListener('click', () => {
+          const isSidebarAboutToCollapse = !chatSidebar.classList.contains('collapsed');
 
-    sidebarToggle.addEventListener('click', () => {
-        const isSidebarAboutToCollapse = !chatSidebar.classList.contains('collapsed');
+          if (isSidebarAboutToCollapse) {
+              // --- COLLAPSING THE SIDEBAR ---
+              // 1. Hide text instantly
+              textSpans.forEach(span => span.classList.add('hide-text'));
 
-        if (isSidebarAboutToCollapse) {
-            // --- COLLAPSING THE SIDEBAR ---
-            // 1. Hide text instantly
-            textSpans.forEach(span => span.classList.add('hide-text'));
+              // 2. Collapse history list instantly
+              const isHistoryOpen = sessionList.style.maxHeight !== '0px';
+              sessionStorage.setItem('chatHistoryWasOpen', isHistoryOpen.toString());
 
-            // 2. Collapse history list instantly
-            const isHistoryOpen = sessionList.style.maxHeight !== '0px';
-            sessionStorage.setItem('chatHistoryWasOpen', isHistoryOpen.toString());
+              if (isHistoryOpen) {
+                  sessionList.style.transition = 'none'; // Disable transition
+                  sessionList.style.maxHeight = '0px';
+                  sessionStorage.setItem('chatHistoryOpen', 'false');
 
-            if (isHistoryOpen) {
-                sessionList.style.transition = 'none'; // Disable transition
-                sessionList.style.maxHeight = '0px';
-                sessionStorage.setItem('chatHistoryOpen', 'false');
+                  requestAnimationFrame(() => {
+                      sessionList.style.transition = 'max-height 0.2s ease-in-out'; // Restore transition
+                  });
+              }
 
-                requestAnimationFrame(() => {
-                    sessionList.style.transition = 'max-height 0.2s ease-in-out'; // Restore transition
-                });
-            }
+              // 3. Then collapse the sidebar
+              chatSidebar.classList.add('collapsed');
+              chatWrapper.classList.add('sidebar-collapsed');
+              toggleIcon.textContent = 'chevron_right'; // 아이콘 변경
 
-            // 3. Then collapse the sidebar
-            chatSidebar.classList.add('collapsed');
-            chatWrapper.classList.add('sidebar-collapsed');
-            toggleIcon.textContent = 'chevron_right'; // 아이콘 변경
+          } else {
+              // --- EXPANDING THE SIDEBAR ---
+              // 1. Expand the sidebar first
+              chatSidebar.classList.remove('collapsed');
+              chatWrapper.classList.remove('sidebar-collapsed');
 
-        } else {
-            // --- EXPANDING THE SIDEBAR ---
-            // 1. Expand the sidebar first
-            chatSidebar.classList.remove('collapsed');
-            chatWrapper.classList.remove('sidebar-collapsed');
+              // 2. Listen for the end of the sidebar's transition
+              const onSidebarTransitionEnd = () => {
+                  chatSidebar.removeEventListener('transitionend', onSidebarTransitionEnd);
 
-            // 2. Listen for the end of the sidebar's transition
-            const onSidebarTransitionEnd = () => {
-                chatSidebar.removeEventListener('transitionend', onSidebarTransitionEnd);
+                  // 3. Show text
+                  textSpans.forEach(span => span.classList.remove('hide-text'));
 
-                // 3. Show text
-                textSpans.forEach(span => span.classList.remove('hide-text'));
+                  // 4. Expand history list after sidebar is expanded
+                  const wasHistoryOpen = sessionStorage.getItem('chatHistoryWasOpen') === 'true';
+                  if (wasHistoryOpen) {
+                      sessionList.classList.remove('collapsed'); // Remove collapsed class
+                      sessionList.style.maxHeight = sessionList.scrollHeight + 'px'; // Animate to scrollHeight
+                      sessionStorage.setItem('chatHistoryOpen', 'true');
+                  }
+              };
+              chatSidebar.addEventListener('transitionend', onSidebarTransitionEnd);
+          }
+      });
+    }
 
-                // 4. Expand history list after sidebar is expanded
-                const wasHistoryOpen = sessionStorage.getItem('chatHistoryWasOpen') === 'true';
-                if (wasHistoryOpen) {
-                    sessionList.classList.remove('collapsed'); // Remove collapsed class
-                    sessionList.style.maxHeight = sessionList.scrollHeight + 'px'; // Animate to scrollHeight
-                    sessionStorage.setItem('chatHistoryOpen', 'true');
-                }
-            };
-            chatSidebar.addEventListener('transitionend', onSidebarTransitionEnd);
-        }
-    });
-
-    if (toggleHistory && sessionList) {
+    if (!isIframe && toggleHistory && sessionList) {
         // Initial state: check sessionStorage for previous state, default to open
         const isHistoryOpen = sessionStorage.getItem('chatHistoryOpen') === 'true';
 
@@ -120,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Delete Session Logic (using event delegation) ---
     const chatSessionListContainer = document.querySelector('.sidebar-session-list'); // The parent container for session items
 
-    if (chatSessionListContainer) {
+    if (!isIframe && chatSessionListContainer) {
         chatSessionListContainer.addEventListener('click', (event) => {
             const button = event.target.closest('.delete-session-btn'); // Find the clicked delete button
 
@@ -346,3 +349,32 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+// widget
+function toggleChatbot() {
+  if (typeof window.isAuthenticated !== "undefined" && !window.isAuthenticated) {
+    window.location.href = window.loginUrl;
+    return;
+  }
+  const chatbot = document.getElementById("chatbot-container");
+  chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+}
+
+// 바깥 클릭 시 챗봇 닫기
+window.addEventListener('click', function(event) {
+  const chatbot = document.getElementById("chatbot-container");
+  const button = document.getElementById("chatbot-button");
+  if (!chatbot || !button) return;
+  if (chatbot.style.display === "block" && !chatbot.contains(event.target) && event.target !== button) {
+    chatbot.style.display = "none";
+  }
+});
+
+// ESC 키로 챗봇 닫기
+window.addEventListener('keydown', function(event) {
+  const chatbot = document.getElementById("chatbot-container");
+  if (!chatbot) return;
+  if (event.key === "Escape" && chatbot.style.display === "block") {
+    chatbot.style.display = "none";
+  }
+});

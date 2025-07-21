@@ -1,14 +1,10 @@
+{% extends 'main/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>지금 서울</title>
-  <link rel="icon" href="{% static 'main/images/Done.webp' %}" type="image/webp">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+{% block extra_head %}
   <link rel="stylesheet" href="{% static 'main/common.css' %}">
   <link rel="stylesheet" href="{% static 'main/event_slider.css' %}">
+  <link rel="stylesheet" href="{% static 'main/chatbot.css' %}">
   <style>
     .container.full-width {
       max-width: 100%;
@@ -21,46 +17,9 @@
       object-fit: cover;
     }
   </style>
-  {% block extra_head %}{% endblock %}
-</head>
-<body>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+{% endblock %}
 
-  <!-- 상단메뉴 -->
-  <nav class="navbar navbar-expand-lg top-header-modern border-bottom shadow-sm fixed-top bg-white">
-    <div class="container">
-      <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'main:home' %}">
-        <img src="{% static 'main/images/Done.webp' %}" alt="done" height="40" class="d-inline-block me-2">
-        지금 서울
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">홈</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'chatbot' or request.resolver_match.url_name == 'chat_bot' %}active{% endif %}" href="{% url 'main:chatbot' %}">채팅</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'board_list' %}active{% endif %}" href="{% url 'main:board_list' %}">게시판</a>
-          </li>
-        </ul>
-        <div class="d-flex align-items-center">
-          {% if request.user.is_authenticated %}
-            <span class="navbar-text me-3">{{ request.user.first_name }}님, 환영합니다!</span>
-            <a class="btn btn-outline-secondary" href="{% url 'main:logout' %}">로그아웃</a>
-            <a class="btn btn-outline-primary ms-2" href="{% url 'main:profile' %}">마이페이지</a>
-          {% else %}
-            <a class="btn btn-outline-primary me-2" href="{% url 'main:login' %}">로그인</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </nav>
-
+{% block content %}
   <div class="main-content">
     <div class="main-slider container full-width mt-4">
       <!-- 슬라이드쇼 -->
@@ -165,9 +124,35 @@
       </div>
     </div>
   </div>
+  <!-- widget - Chatbot Modal -->
+  {% if request.user.is_authenticated %}
+    {% if latest_session %}
+      <div id="chatbot-container" style="display:none;">
+        <iframe src="/chatbot/{{ latest_session.id }}/" frameborder="0"></iframe>
+      </div>
+    {% else %}
+      <div id="chatbot-container" style="display:none;">
+        <iframe src="/chatbot/new/" frameborder="0"></iframe>
+      </div>
+    {% endif %}
+  {% else %}
+    <div id="chatbot-container" style="display:none;">
+      <iframe src="/chatbot/" frameborder="0"></iframe>
+    </div>
+  {% endif %}
 
-  {% block extra_scripts %}
+  <!-- widget - Chatbot Floating Button -->
+  <div id="chatbot-button" onclick="toggleChatbot()" style="position: fixed; bottom: 24px; right: 24px; background-color: #007bff; color: white; font-size: 28px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 9999;">
+    💬
+  </div>
+  <script>
+  function toggleChatbot() {
+    const chatbot = document.getElementById("chatbot-container");
+    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+  }
+  </script>
+{% endblock %}
+
+{% block extra_scripts %}
   <script src="{% static 'main/js/notifications.js' %}"></script>
-  {% endblock %}
-</body>
-</html>
+{% endblock %}
