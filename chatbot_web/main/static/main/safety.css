@@ -1,0 +1,82 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 900px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+}
+
+#korea-map {
+  position: relative;
+  text-align: center;
+}
+
+/* 구 영역 스타일 */
+.land {
+  fill: #CCCCCC;
+  stroke: white;
+  stroke-width: 0.5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* 호버 제거용 */
+.no-hover:hover {
+  fill: #CCCCCC !important;
+  transform: none !important;
+}
+
+/* 클릭 시 강조 */
+.land.focused {
+  fill: #FF6600;
+  transform: scale(2);
+  z-index: 10;
+}
+
+/* 나머지 흐림 처리 */
+.land.dimmed {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* 정보 패널 */
+#info-panel {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  display: none;
+}
+
+#info-panel h3 {
+  margin-top: 0;
+}
+
+#info-panel p {
+  margin: 5px 0;
+}
+
+.emoji-flag {
+  position: absolute;
+  font-size: 30px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}

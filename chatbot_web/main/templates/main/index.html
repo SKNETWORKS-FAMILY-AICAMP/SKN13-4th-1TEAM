@@ -1,19 +1,16 @@
+{% extends 'main/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>지금 서울</title>
-  <link rel="icon" href="{% static 'main/images/Done.webp' %}" type="image/webp">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'main/common.css' %}">
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'main/style.css' %}">
   <link rel="stylesheet" href="{% static 'main/event_slider.css' %}">
+  <link rel="stylesheet" href="{% static 'main/chatbot.css' %}">
   <style>
     .container.full-width {
       max-width: 100%;
-      padding-left: 0;
-      padding-right: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      gap: 30px;
     }
     .carousel img {
       width: 100%;
@@ -21,65 +18,38 @@
       object-fit: cover;
     }
   </style>
-  {% block extra_head %}{% endblock %}
+  {% block extra_head %}
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
-
-  <!-- 상단메뉴 -->
-  <nav class="navbar navbar-expand-lg top-header-modern border-bottom shadow-sm fixed-top bg-white">
-    <div class="container">
-      <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'main:home' %}">
-        <img src="{% static 'main/images/Done.webp' %}" alt="done" height="40" class="d-inline-block me-2">
-        지금 서울
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">홈</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'chatbot' or request.resolver_match.url_name == 'chat_bot' %}active{% endif %}" href="{% url 'main:chatbot' %}">채팅</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.resolver_match.url_name == 'board_list' %}active{% endif %}" href="{% url 'main:board_list' %}">게시판</a>
-          </li>
-        </ul>
-        <div class="d-flex align-items-center">
-          {% if request.user.is_authenticated %}
-            <span class="navbar-text me-3">{{ request.user.first_name }}님, 환영합니다!</span>
-            <a class="btn btn-outline-secondary" href="{% url 'main:logout' %}">로그아웃</a>
-            <a class="btn btn-outline-primary ms-2" href="{% url 'main:profile' %}">마이페이지</a>
-          {% else %}
-            <a class="btn btn-outline-primary me-2" href="{% url 'main:login' %}">로그인</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </nav>
-
   <div class="main-content">
     <div class="main-slider container full-width mt-4">
       <!-- 슬라이드쇼 -->
       <div class="carousel slide" id="eventCarousel" data-bs-ride="carousel" style="flex-grow: 1;">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #ddd;">
-              <img src="{% static 'main/images/whiplash.png'%}" alt="done" height="40"></img>
-            </div>
+            <a href="/heritage" class="d-block w-100 text-decoration-none">
+              <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #ddd;">
+                <img src="{% static 'main/images/heritage_banner.png' %}" alt="서울시 문화유산"
+                    class="img-fluid" style="max-height: 100%; object-fit: cover;" />
+              </div>
+            </a>
           </div>
           <div class="carousel-item">
-            <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #ccc;">
-              <img src="{% static 'main/images/콩창섭-신창섭.gif'%}" alt="done" height="40"></img>
-            </div>
+            <a href="/weather" class="d-block w-100 text-decoration-none">
+              <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #ccc;">
+                <img src="{% static 'main/images/weather_banner.png' %}" alt="서울 날씨"
+                            class="img-fluid" style="max-height: 100%; object-fit: cover;" />
+              </div>
+            </a>
           </div>
           <div class="carousel-item">
-            <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #bbb;">
-              <img src="{% static 'main/images/dancing.gif'%}" alt="done" height="40"></img>
-            </div>
+            <a href="/transport" class="d-block w-100 text-decoration-none">
+              <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #bbb;">
+                <img src="{% static 'main/images/transport_banner.png' %}" alt="실시간 교통 정보"
+                            class="img-fluid" style="max-height: 100%; object-fit: cover;" />
+              </div>
+            </a>
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
@@ -97,44 +67,71 @@
         <p>서울시에 궁금한 것을 무엇이든 물어보세요!</p>
       </aside>
     </div>
+
+    <!-- 주요 서비스 -->
     <section id="main-services">
-    <h2>주요 서비스</h2>
-    <div class="services-container">
-      <div class="service-item">
-        <img src="{% static 'images/service1.png' %}" alt="공공서비스예약">
-        <span>공공서비스예약</span>
+      <h2>주요 서비스</h2>
+      <div class="services-container">
+
+        <a href="{% url 'main:job_page' %}" class="card-link">
+          <div class="service-item">
+            <img src="{% static 'main/images/service1.png' %}" alt="서울 잡터뷰 아이콘">
+            <span>서울 잡터뷰</span>
+            <p class="service-subtext">청년·중장년 모두를 위한 일자리</p>
+          </div>
+        </a>
+
+        <a href="https://eungdapso.seoul.go.kr/exp/pub/complaint_pub_lis.do" class="card-link">
+          <div class="service-item">
+            <img src="{% static 'main/images/service2.png' %}" alt="응답소 바로가기 아이콘">
+            <span>응답소 바로가기</span>
+            <p class="service-subtext">궁금한 건 바로 문의하고 해결하세요</p>
+          </div>
+        </a>
+
+        <a href="{% url 'main:welfare_page' %}" class="card-link">
+          <div class="service-item">
+            <img src="{% static 'main/images/service3.png' %}" alt="우리동네 복지박스 아이콘">
+            <span>우리동네 복지박스</span>
+            <p class="service-subtext">숨어 있는 혜택, 지금 확인해보세요</p>
+          </div>
+        </a>
+
+        <a href="{% url 'main:safety_page' %}" class="card-link">
+          <div class="service-item">
+            <img src="{% static 'main/images/service4.png' %}" alt="안전서울 24시 아이콘">
+            <span>안전서울 24시</span>
+            <p class="service-subtext">재난 특보부터 대피소까지 한눈에</p>
+          </div>
+        </a>
+
+        <a href="{% url 'main:housing_page' %}" class="card-link">
+          <div class="service-item">
+            <img src="{% static 'main/images/service5.png' %}" alt="서울집 정보통 아이콘">
+            <span>서울집 정보통</span>
+            <p class="service-subtext">실거래가부터 청년주택까지 한눈에!</p>
+          </div>
+        </a>
+
       </div>
-      <div class="service-item">
-        <img src="{% static 'images/service2.png' %}" alt="민원신고">
-        <span>응답소(민원신고)</span>
-      </div>
-      <div class="service-item">
-        <img src="{% static 'images/service3.png' %}" alt="서울일자리">
-        <span>서울일자리</span>
-      </div>
-      <div class="service-item">
-        <img src="{% static 'images/service4.png' %}" alt="부동산정보">
-        <span>부동산정보</span>
-      </div>
-      <div class="service-item">
-        <img src="{% static 'images/service5.png' %}" alt="서울복지포털">
-        <span>서울복지포털</span>
-      </div>
-    </div>
+    </section>
+
+    <!-- 뉴스 및 행사 영역 -->
     <div class="bottom-section">
       <div class="content-wrapper">
+
         <!-- 참여 신청 -->
         <div class="content-column">
           <div class="section-header">
             <h3>서울 뉴스 현황</h3>
-            <a href="/news?page=1" class="more-link">+ 더보기</a>
+            <a href="{% url 'main:news_page' %}" class="more-link">+ 더보기</a>
           </div>
           <ul class="content-list">
             {% for item in news_list %}
-            <li>
-              <span class="category {{ item.category_class }}">{{ item.category }}</span>
-              <a href="{{ item.link }}">{{ item.title }}</a>
-            </li>
+              <li>
+                <span class="category {{ item.category_class }}">{{ item.category }}</span>
+                <a href="{{ item.link }}">{{ item.title }}</a>
+              </li>
             {% endfor %}
           </ul>
         </div>
@@ -143,31 +140,42 @@
         <div class="content-column">
           <div class="section-header">
             <h3>행사 및 축제</h3>
-            <a href="/events?page=1" class="more-link">+ 더보기</a>
+            <a href="{% url 'main:festival_page' %}" class="more-link">+ 더보기</a>
           </div>
           <ul class="content-list">
             {% for item in event_list %}
-            <li>
-              <span class="category {{ item.category_class }}">{{ item.category }}</span>
-              <a href="{{ item.link }}">{{ item.title }}</a>
-            </li>
+              <li>
+                <span class="category {{ item.category_class }}">{{ item.category }}</span>
+                <a href="{{ item.link }}">{{ item.title }}</a>
+              </li>
             {% endfor %}
           </ul>
-        </div>
-
-        <!-- 챗봇 바로가기 -->
-        <div class="chatbot-icon">
-          <a href="/chatbot">
-            <img src="{% static 'images/chatbot_icon.png' %}" alt="챗봇 바로가기" />
-            <p>챗봇 바로가기</p>
-          </a>
         </div>
       </div>
     </div>
   </div>
+
+  <p style="text-align:center; margin-top: 20px;">
+    © 2025 지금서울. 아이콘 저작권  <br />
+      <span>
+        잡터뷰 :
+        <a href = "https://www.flaticon.com/kr/authors/iconbaandar">IconBaandar - Flaticon</a> /
+        응답소 : 
+        <a href = "https://www.flaticon.com/kr/authors/iconbaandar">Uniconlabs - Flaticon</a> /
+        복지박스 : 
+        <a href = "https://www.flaticon.com/kr/authors/iconbaandar">noomtah - Flaticon</a> /
+        안전서울 : 
+        <a href = "https://www.flaticon.com/kr/authors/iconbaandar">Freepik - Flaticon</a> /
+        정보통 : 
+        <a href = "https://www.flaticon.com/kr/authors/iconbaandar">IconBaandar - Flaticon</a>
+      </span>
+    </p>
+  </p>
+{% endblock %}
 
   {% block extra_scripts %}
   <script src="{% static 'main/js/notifications.js' %}"></script>
   {% endblock %}
 </body>
 </html>
+{% endblock %}

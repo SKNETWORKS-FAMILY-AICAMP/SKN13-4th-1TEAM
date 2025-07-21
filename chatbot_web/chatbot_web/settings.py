@@ -158,3 +158,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 # Password reset URL for email
 PASSWORD_RESET_CONFIRM_URL = 'main:password_reset_confirm'
+
+# iframe에서 챗봇 위젯이 정상적으로 보이도록 허용
+X_FRAME_OPTIONS = 'SAMEORIGIN'

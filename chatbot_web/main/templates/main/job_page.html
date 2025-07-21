@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/job_page.css' %}">
+
+<div class="job-container">
+  <h2>서울 잡터뷰</h2>
+
+  <input type="text" id="search-input" placeholder="회사명이나 직무명을 입력하세요" onkeyup="filterJobs()" />
+
+  <div class="category-filter">
+    <span class="category-btn active" onclick="filterByCategory('전체', this)">전체</span>
+    {% for category in categories %}
+      <span class="category-btn" onclick="filterByCategory('{{ category }}', this)">{{ category }}</span>
+    {% endfor %}
+  </div>
+
+  <div class="job-list" id="job-list">
+    {% for job in jobs %}
+    <div class="job-card" data-category="{{ job.category }}">
+      <h4>{{ job.title }}</h4>
+      <p><strong>{{ job.company }}</strong> | {{ job.location }}</p>
+      <p>{{ job.category }} / 마감일: {{ job.deadline }}</p>
+    </div>
+    {% endfor %}
+    <p id="no-result" style="display:none; color: gray;">해당 분야에 등록된 일자리가 없습니다.</p>
+  </div>
+</div>
+
+<script src="{% static 'main/js/job_page.js' %}"></script>
+{% endblock %}

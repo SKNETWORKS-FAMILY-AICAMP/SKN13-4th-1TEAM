@@ -89,3 +89,43 @@
 #chatSearchForm button:active {
   transform: translateY(0); /* 클릭 시 원래대로 */
 }
+
+/* widget */
+#chatbot-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #007bff;
+  color: white;
+  font-size: 28px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 9999;
+}
+
+#chatbot-container {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 360px;
+  height: 500px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 9998;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+#chatbot-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  /* display: ; */
+}

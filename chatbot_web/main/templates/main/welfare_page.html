@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+<div class="welfare-container">
+  <h2>서울 복지 정보</h2>
+
+  <input type="text" id="welfare-search" placeholder="복지 서비스명을 입력하세요" onkeyup="filterWelfare()" />
+
+  <div class="category-filter">
+    <!-- JS에서 카테고리 버튼 자동 삽입 -->
+  </div>
+
+  <div class="welfare-list" id="welfare-list">
+    <!-- JS에서 복지 항목 자동 삽입 -->
+  </div>
+
+  <p id="no-result" style="display:none; color: gray;">해당 분야에 등록된 복지 정보가 없습니다.</p>
+</div>
+
+<link rel="stylesheet" href="{% static 'main/welfare.css' %}" />
+<script src="{% static 'main/js/welfare.js' %}"></script>
+{% endblock %}

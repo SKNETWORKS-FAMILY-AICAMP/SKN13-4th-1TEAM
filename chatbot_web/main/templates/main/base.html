@@ -2,58 +2,146 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="stylesheet" href="{% static 'main/style.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   {% block extra_head %}{% endblock %}
 </head>
+
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 
-  
-
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
     <div class="container">
+      <!-- 로고 -->
       <a class="navbar-brand fw-bold" href="{% url 'main:home' %}">지금 서울</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'main:home' %}">홈</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'chatbot' %}active{% endif %}" href="{% url 'main:chatbot' %}">챗봇</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'board_list' %}active{% endif %}" href="{% url 'main:board_list' %}">게시판</a>
-              </li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
+
+        <!-- 왼쪽: 1~5 대주제 -->
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown hover-dropdown">
+            <a class="nav-link dropdown-toggle" href="#">오늘의 서울</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">실시간 날씨</a></li>
+              <li><a class="dropdown-item" href="#">교통상황</a></li>
+              <li><a class="dropdown-item" href="#">재난/안전 알림</a></li>
+              <li><a class="dropdown-item" href="#">오늘의 행사</a></li>
+              <li><a class="dropdown-item" href="#">미세먼지 현황</a></li>
             </ul>
-            <div class="d-flex">
-              {% if request.user.is_authenticated %}
-                <span class="navbar-text me-3">{{ request.user.first_name }}님, 환영합니다!</span>
-                <a class="btn btn-outline-secondary" href="{% url 'main:logout' %}">로그아웃</a>
-              {% else %}
-                <a class="btn btn-outline-primary me-2" href="{% url 'main:login' %}">로그인</a>
-              {% endif %}
-        </div>
+          </li>
+
+          <li class="nav-item dropdown hover-dropdown">
+            <a class="nav-link dropdown-toggle" href="#">복지·생활지원</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">청년지원</a></li>
+              <li><a class="dropdown-item" href="#">어르신 복지</a></li>
+              <li><a class="dropdown-item" href="#">아동/청소년 복지</a></li>
+              <li><a class="dropdown-item" href="#">장애인 지원</a></li>
+              <li><a class="dropdown-item" href="#">주거복지</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown hover-dropdown">
+            <a class="nav-link dropdown-toggle" href="#">교육·자기계발</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">평생학습</a></li>
+              <li><a class="dropdown-item" href="#">문화센터 강좌</a></li>
+              <li><a class="dropdown-item" href="#">온라인 강의</a></li>
+              <li><a class="dropdown-item" href="#">외국어/자격증</a></li>
+              <li><a class="dropdown-item" href="#">청소년 진로</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown hover-dropdown">
+            <a class="nav-link dropdown-toggle" href="#">여가·문화</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">공연/전시</a></li>
+              <li><a class="dropdown-item" href="#">축제 정보</a></li>
+              <li><a class="dropdown-item" href="#">공원/산책로</a></li>
+              <li><a class="dropdown-item" href="#">야외 영화</a></li>
+              <li><a class="dropdown-item" href="#">근교 나들이</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown hover-dropdown">
+            <a class="nav-link dropdown-toggle" href="#">건강·의료</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">공공병원/보건소</a></li>
+              <li><a class="dropdown-item" href="#">건강검진</a></li>
+              <li><a class="dropdown-item" href="#">감염병 정보</a></li>
+              <li><a class="dropdown-item" href="#">식생활/운동</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'chatbot' %}active{% endif %}" href="{% url 'main:chatbot' %}">챗봇</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'board_list' %}active{% endif %}" href="{% url 'main:board_list' %}">게시판</a>
+          </li>
+        </ul>
+
+        <!-- 오른쪽: 챗봇 / 게시판 / 로그인 -->
+        <ul class="navbar-nav align-items-center">
+
+          {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <span class="navbar-text me-2">{{ request.user.first_name }}님, 환영합니다!</span>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-secondary" href="{% url 'main:logout' %}">로그아웃</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="btn btn-outline-primary me-2" href="{% url 'main:login' %}">로그인</a>
+            </li>
+          {% endif %}
+        </ul>
+
       </div>
     </div>
   </nav>
-
-
 
   <div class="main-content" style="margin-top: 56px;">
     {% block content %}
     {% endblock %}
   </div>
-
   {% block extra_scripts %}{% endblock %}
 </body>
+<!-- widget - Chatbot Modal -->
+  <div id="chatbot-container" style="
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 400px;   /* 필요에 따라 조절 */
+      height: 600px;  /* 필요에 따라 조절 */
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+  ">
+    <iframe src="/floating_chatbot/widget/" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+  </div>
+  <!-- widget - Chatbot Floating Button -->
+  <div id="chatbot-button" {% if request.user.is_authenticated %} onclick="toggleChatbot()" {% else %} onclick="goLoginPage()" {% endif %} style="position: fixed; bottom: 24px; right: 24px; background-color: #007bff; color: white; font-size: 28px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 9999;">
+    💬
+  </div>
+  <script>
+    function goLoginPage(){
+      window.location.href = "/login/";
+    }
+  function toggleChatbot() {
+    const chatbot = document.getElementById("chatbot-container");
+    chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+  }
+  </script>
 </html>

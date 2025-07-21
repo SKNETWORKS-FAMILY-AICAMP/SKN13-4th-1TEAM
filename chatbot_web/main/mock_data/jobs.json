@@ -1,0 +1,23 @@
+[
+  {
+    "title": "청년 정책 기획 보조",
+    "company": "서울청년센터",
+    "location": "서울시 종로구",
+    "deadline": "2025-07-30",
+    "category": "공공기관/비영리"
+  },
+  {
+    "title": "AI 서비스 기획자",
+    "company": "AI랩",
+    "location": "서울시 강남구",
+    "deadline": "2025-08-02",
+    "category": "IT/개발"
+  },
+  {
+    "title": "인사 관리 보조",
+    "company": "HR컨설팅",
+    "location": "서울시 마포구",
+    "deadline": "2025-07-28",
+    "category": "경영/사무"
+  }
+]

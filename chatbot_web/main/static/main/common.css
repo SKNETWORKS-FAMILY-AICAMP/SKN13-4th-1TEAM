@@ -204,8 +204,9 @@ body {
 
 /* Main Content */
 .main-content {
-  padding: 60px 20px;
-  max-width: 90%;
+  padding: 0px 20px;
+  min-height: 100vh;
+  max-width: 100%;
   align-items: center;  /* 가로 중앙 */
   margin: 0 auto;
   background-color: transparent; /* Ensure background is transparent */
@@ -318,4 +319,26 @@ body::before {
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
   color: #F8F4E3; /* 요청하신 색상 */
+}
+
+/* 드롭다운 호버 유지 효과 */
+.hover-dropdown {
+  position: relative;
+}
+
+.hover-dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  z-index: 1000;
+  min-width: 200px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.hover-dropdown:hover > .dropdown-menu,
+.hover-dropdown .dropdown-menu:hover {
+  display: block;
 }

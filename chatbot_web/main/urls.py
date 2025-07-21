@@ -23,6 +23,8 @@ urlpatterns = [
     path('api/notifications/<int:notification_id>/read/', views.mark_notification_as_read, name='mark_notification_as_read'),
     path('recommendation/', views.recommendation, name='recommendation'),
     path('map/', views.map_view, name='map'),
+    path('floating_chatbot/widget/', views.chatbot_widget_view, name='chatbot_widget'),
+
 
     # 비밀번호 재설정 URL
     path('password_reset/', auth_views.PasswordResetView.as_view(
@@ -49,4 +51,21 @@ urlpatterns = [
     path('api/board/<int:pk>/comments/add/', views.add_comment, name='add_comment'),
     path('api/comments/<int:pk>/delete/', views.delete_comment, name='delete_comment'),
     path('api/board/<int:pk>/toggle_announcement/', views.toggle_announcement, name='toggle_announcement'),
+
+
+    # 메인 홈페이지 5개 카드 연결 설정
+    path('job/', views.job_page, name='job_page'),
+    path('civil/', views.civil_page, name='civil_page'),
+    path('welfare/', views.welfare_page, name='welfare_page'),
+    path('safety/', views.safety_page, name='safety_page'),
+    path('housing/', views.housing_page, name='housing_page'),
+    
+    # 상세 카드 연결 설정
+    path('jobs/', views.job_view, name='job_page'),
+    path('safety/', views.safety_page, name='safety_page'),
+    path('transport/', views.transport_page, name='transport_page'),
+    path('weather/', views.weather_page, name='weather_page'),
+    path('heritage/', views.heritage_page, name='heritage_page'),
+    path('news/', views.news_page, name='news_page'),
+    path('festival/', views.festival_page, name='festival_page'),
 ]

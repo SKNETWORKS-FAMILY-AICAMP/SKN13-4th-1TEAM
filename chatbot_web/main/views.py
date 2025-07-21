@@ -697,3 +697,100 @@ def toggle_announcement(request, pk):
 
         return JsonResponse({'success': True, 'is_announcement': post.is_announcement})
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+#===============================================================================
+#메인화면 임시 뉴스
+#===============================================================================
+
+
+def index(request):
+    # 미리보기용 뉴스 5개
+    news_list = [
+        {"title": "뉴스 제목 1", "link": "#", "category": "시정", "category_class": "category-city"},
+        {"title": "뉴스 제목 2", "link": "#", "category": "안전", "category_class": "category-safety"},
+        {"title": "뉴스 제목 3", "link": "#", "category": "복지", "category_class": "category-welfare"},
+        {"title": "뉴스 제목 4", "link": "#", "category": "문화", "category_class": "category-culture"},
+        {"title": "뉴스 제목 5", "link": "#", "category": "기타", "category_class": "category-etc"},
+    ]
+
+    # 미리보기용 행사 5개
+    event_list = [
+        {"title": "행사 제목 1", "link": "#", "category": "공연", "category_class": "category-performance"},
+        {"title": "행사 제목 2", "link": "#", "category": "전시", "category_class": "category-exhibition"},
+        {"title": "행사 제목 3", "link": "#", "category": "체험", "category_class": "category-experience"},
+        {"title": "행사 제목 4", "link": "#", "category": "축제", "category_class": "category-festival"},
+        {"title": "행사 제목 5", "link": "#", "category": "기타", "category_class": "category-etc"},
+    ]
+
+    return render(request, 'main/index.html', {
+        'news_list': news_list,
+        'event_list': event_list,
+    })
+
+##############################################
+# 주요 5가지 기능 연결 함수
+##############################################
+
+#잡터뷰 함수 - 추후에 api 연결로 변경예정
+def job_view(request):
+    json_path = os.path.join(os.path.dirname(__file__), 'mock_data', 'jobs.json')
+
+
+    with open(json_path, 'r', encoding='utf-8') as f:
+        jobs = json.load(f)
+
+
+    categories = [
+        "IT/개발", "디자인/미디어", "경영/사무", "영업/고객상담",
+        "마케팅/광고", "교육/강사", "의료/복지", "생산/제조",
+        "공공기관/비영리", "기타/특수직"
+    ]
+
+    return render(request, 'main/job_page.html', {
+        'jobs': jobs,
+        'categories': categories,
+    })
+
+#교통정보 페이지 연결
+def transport_page(request):
+    return render(request, 'main/transport.html')
+
+#날씨정보 페이지 연결
+def weather_page(request):
+    return render(request, 'main/weather.html')
+
+#문화정보 페이지 연결
+def heritage_page(request):
+    return render(request, 'main/heritage.html')
+
+#일자리정보 페이지 연결
+def job_page(request):
+    return render(request, 'main/job_page.html')
+
+#민원정보 페이지 연결
+def civil_page(request):
+    return render(request, 'main/civil_page.html')
+
+#복지정보 페이지 연결
+def welfare_page(request):
+    return render(request, 'main/welfare_page.html')
+
+#안전정보 페이지 연결
+def safety_page(request):
+    return render(request, 'main/safety_page.html')
+
+#주거정보 페이지 연결
+def housing_page(request):
+    return render(request, 'main/housing_page.html')
+
+#뉴스정보 페이지 연결
+def news_page(request):
+    return render(request, 'main/news.html')
+
+#행사정보 페이지 연결
+def festival_page(request):
+    return render(request, 'main/festival.html')
+
+@login_required
+def chatbot_widget_view(request):
+    return render(request, 'main/floating_chatbot.html')

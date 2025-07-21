@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const isIframe = window.self != window.top;
     const chatSearchForm = document.getElementById('chatSearchForm');
     const chatSearchInput = document.getElementById('chatSearchInput');
     const toggleSearchDiv = document.getElementById('toggleSearch');
 
-    if (toggleSearchDiv) {
+    if (!isIframe && toggleSearchDiv && chatSearchForm) {
         toggleSearchDiv.addEventListener('click', () => {
             chatSearchForm.classList.toggle('visible');
         });
@@ -39,9 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sessionList = document.querySelector('.sidebar-session-list');
 
     const textSpans = document.querySelectorAll('.sidebar-item > span:not(.material-symbols-outlined)');
-
-    sidebarToggle.addEventListener('click', () => {
-        const isSidebarAboutToCollapse = !chatSidebar.classList.contains('collapsed');
+    if (!isIframe && toggleSearchDiv && chatSearchForm){
+      sidebarToggle.addEventListener('click', () => {
+          const isSidebarAboutToCollapse = !chatSidebar.classList.contains('collapsed');
 
         if (isSidebarAboutToCollapse) {
             // --- COLLAPSING THE SIDEBAR ---
@@ -91,8 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
             chatSidebar.addEventListener('transitionend', onSidebarTransitionEnd);
         }
     });
+  }
 
-    if (toggleHistory && sessionList) {
+    if (!isIframe && toggleHistory && sessionList) {
         // Initial state: check sessionStorage for previous state, default to open
         const isHistoryOpen = sessionStorage.getItem('chatHistoryOpen') === 'true';
 
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Delete Session Logic (using event delegation) ---
     const chatSessionListContainer = document.querySelector('.sidebar-session-list'); // The parent container for session items
 
-    if (chatSessionListContainer) {
+    if (!isIframe && chatSessionListContainer) {
         chatSessionListContainer.addEventListener('click', (event) => {
             const button = event.target.closest('.delete-session-btn'); // Find the clicked delete button
 
@@ -346,3 +348,32 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+// widget
+function toggleChatbot() {
+  if (typeof window.isAuthenticated !== "undefined" && !window.isAuthenticated) {
+    window.location.href = window.loginUrl;
+    return;
+  }
+  const chatbot = document.getElementById("chatbot-container");
+  chatbot.style.display = chatbot.style.display === "none" ? "block" : "none";
+}
+
+// 바깥 클릭 시 챗봇 닫기
+window.addEventListener('click', function(event) {
+  const chatbot = document.getElementById("chatbot-container");
+  const button = document.getElementById("chatbot-button");
+  if (!chatbot || !button) return;
+  if (chatbot.style.display === "block" && !chatbot.contains(event.target) && event.target !== button) {
+    chatbot.style.display = "none";
+  }
+});
+
+// ESC 키로 챗봇 닫기
+window.addEventListener('keydown', function(event) {
+  const chatbot = document.getElementById("chatbot-container");
+  if (!chatbot) return;
+  if (event.key === "Escape" && chatbot.style.display === "block") {
+    chatbot.style.display = "none";
+  }
+});
