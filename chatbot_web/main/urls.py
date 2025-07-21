@@ -23,7 +23,7 @@ urlpatterns = [
     path('api/notifications/<int:notification_id>/read/', views.mark_notification_as_read, name='mark_notification_as_read'),
     path('recommendation/', views.recommendation, name='recommendation'),
     path('map/', views.map_view, name='map'),
-    path('floating_chatbot/widget/', views.chatbot_widget_view, name='chatbot_widget'),
+    path('floating_chatbot/new/', views.chatbot_widget_view, name='chatbot_widget'),
 
 
     # 비밀번호 재설정 URL
