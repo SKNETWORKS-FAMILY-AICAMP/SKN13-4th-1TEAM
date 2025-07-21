@@ -1,0 +1,44 @@
+# SKN13-4TH-1TEAM requirements.txt
+# 리눅스 서버 배포용 (최신 LTS Ubuntu 기준)
+# 주요 패키지는 공식 문서/코드 import 기준으로 명확히 명시
+
+# --- Django 및 웹 프레임워크 ---
+Django==5.2.3
+widget-tweaks==1.4.12
+python-dotenv==1.0.1
+
+# --- MySQL 연동 및 ORM ---
+mysqlclient==2.2.4           # Django MySQL 드라이버 (권장)
+pymysql==1.1.0               # SQLAlchemy용 MySQL 드라이버
+SQLAlchemy==2.0.30
+
+# --- LLM, LangChain, LangGraph ---
+langchain==0.1.16
+langchain-openai==0.1.8
+langgraph==0.0.38
+
+# --- 벡터스토어/임베딩 ---
+chromadb==0.4.24
+langchain-chroma==0.0.8
+
+# --- OpenAI ---
+openai==1.30.1
+
+# --- 데이터/크롤링/웹 ---
+requests==2.31.0
+beautifulsoup4==4.12.3
+selenium==4.21.0
+pandas==2.2.2
+
+# --- 기타 유틸리티/타입 ---
+pydantic==2.7.1
+
+# --- 기타 (필요시) ---
+# mcp (Smithery MCP 관련, 공식 배포판이 없을 수 있음. 필요시 npm 등 별도 설치)
+# fitz (PyMuPDF, PDF 처리용. dataset/test.ipynb 참고)
+# PyMuPDF==1.24.3
+
+# --- 주의사항 ---
+# 1. 일부 패키지는 시스템에 따라 빌드 툴(gcc, python3-dev, libmysqlclient-dev 등) 필요
+# 2. .env 파일에 API KEY, DB 정보 등 환경변수 반드시 설정
+# 3. 크롬드라이버/셀레니움 등은 서버 환경에 맞게 별도 설치 필요 
