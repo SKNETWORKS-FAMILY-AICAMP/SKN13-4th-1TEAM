@@ -9,53 +9,49 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-<div class="chat-wrapper">
-  <button id="sidebarToggle" class="sidebar-toggle-btn">
-    <span class="material-symbols-outlined">menu</span>
-  </button>  
+
+{% if not request.user.is_authenticated %}
+  <script>
+    if (window.self !== window.top) {
+      window.top.location.href = "{% url 'main:login' %}?next={{ request.path }}";
+    } else {
+      window.location.href = "{% url 'main:login' %}?next={{ request.path }}";
+    }
+  </script>
+{% endif %}
+
+<div class="chat-wrapper">  
   <!-- 오른쪽 메인 챗영역 -->
-<div class="chat-main">
-  <p>Session ID: 
-    {% if request.user.is_authenticated %}
-      {{ request.user.username }}
-    {% else %}
-      {{ request.session.session_key }}
-    {% endif %}
-  </p>
-  <h2 class="chat-title">삐삐삣?</h2>
+  <div class="chat-main">
     {% if chat_messages %}
       {% for msg in chat_messages %}
         <div class="message {{ msg.role }}-message markdown-content">{{ msg.content|safe }}</div>
       {% endfor %}
-    {% else %}
-      <div>대화 내역이 없습니다.</div>
     {% endif %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const initialMessages = document.querySelectorAll('.message.markdown-content');
-      initialMessages.forEach(function(messageElement) {
-        messageElement.innerHTML = marked.parse(messageElement.innerHTML);
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const initialMessages = document.querySelectorAll('.message.markdown-content');
+        initialMessages.forEach(function(messageElement) {
+          messageElement.innerHTML = marked.parse(messageElement.innerHTML);
+        });
       });
-    });
-  </script>
-  <form id="chatForm" method="post" class="chat-input-wrapper" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" id="fileUpload" name="file" style="display: none;" />
-    <button type="button" id="uploadBtn" aria-label="파일 업로드">
-        <span class="material-symbols-outlined">add</span>
-    </button>
-    <input type="text" id="userInput" name="content" placeholder="삐삐삣" autocomplete="off" />
-    <button type="submit" id="sendBtn" aria-label="전송">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-        viewBox="0 0 24 24" width="20" height="20">
-        <path d="M22 2L11 13"></path>
-        <path d="M22 2L15 22 11 13 2 9 22 2z"></path>
-      </svg>
-    </button>
-  </form>
-</div>
-
-<script src="{% static 'main/js/chatbot.js' %}"></script>
-
+    </script>
+    <form id="chatForm" method="post" class="chat-input-wrapper" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" id="fileUpload" name="file" style="display: none;" />
+      <button type="button" id="uploadBtn" aria-label="파일 업로드">
+          <span class="material-symbols-outlined">add</span>
+      </button>
+      <input type="text" id="userInput" name="content" placeholder="삐삐삣" autocomplete="off" />
+      <button type="submit" id="sendBtn" aria-label="전송">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24" width="20" height="20">
+          <path d="M22 2L11 13"></path>
+          <path d="M22 2L15 22 11 13 2 9 22 2z"></path>
+        </svg>
+      </button>
+    </form>
+  </div>
+  <script src="{% static 'main/js/chatbot.js' %}"></script>
 </body>
 </html>

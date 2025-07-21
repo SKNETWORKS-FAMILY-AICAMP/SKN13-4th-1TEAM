@@ -129,7 +129,7 @@
       overflow: hidden;
       background: white;
   ">
-    <iframe src="/floating_chatbot/widget/" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    <iframe src="/floating_chatbot/new/" frameborder="0" style="width: 100%; height: 100%;"></iframe>
   </div>
   <!-- widget - Chatbot Floating Button -->
   <div id="chatbot-button" {% if request.user.is_authenticated %} onclick="toggleChatbot()" {% else %} onclick="goLoginPage()" {% endif %} style="position: fixed; bottom: 24px; right: 24px; background-color: #007bff; color: white; font-size: 28px; width: 60px; height: 60px; border-radius: 50%; text-align: center; line-height: 60px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 9999;">
