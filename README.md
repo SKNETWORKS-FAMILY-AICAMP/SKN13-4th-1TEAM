@@ -10,19 +10,19 @@
 <table width="100%">
   <tr>
     <td align="center" width="20%">
-      <img src="image/남궁건우_사진.png" width="150"/>
+      <img src="chatbot_web/main/static/main/images/남궁건우_사진.png" width="150"/>
     </td>
     <td align="center" width="20%">
-      <img src="image/우지훈_사진.png" width="150"/>
+      <img src="chatbot_web/main/static/main/images/우지훈_사진.png" width="150"/>
     </td>
     <td align="center" width="20%">
-      <img src="image/이명인_사진.png" width="150"/>
+      <img src="chatbot_web/main/static/main/images/이명인_사진.png" width="150"/>
     </td>
     <td align="center" width="20%">
-      <img src="image/홍채우_사진.png" width="150"/>
+      <img src="chatbot_web/main/static/main/images/홍채우_사진.png" width="150"/>
     </td>
     <td align="center" width="20%">
-      <img src="image/김승호_사진.png" width="150"/>
+      <img src="chatbot_web/main/static/main/images/김승호_사진.png" width="150"/>
     </td>
   <tr>
 
