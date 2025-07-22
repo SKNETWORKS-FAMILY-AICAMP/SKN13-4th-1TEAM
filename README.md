@@ -361,10 +361,22 @@ graph TD
   - **Naver API 등**: 기타 기능 수행
 - 결과는 챗봇 에이전트로 다시 전달
 
-### 4. 응답 구성 및 반환
+### 4. Langgraph
+```mermaid
+graph TD
+    START((Start)) --> Prompt["Prompt Node\n(시스템 프롬프트 삽입)"]
+    Prompt --> Chatbot["ChatBot Node\n(LLM 호출 + 메시지 처리)"]
+    
+    Chatbot -->|tools_condition: 사용 도구 필요| Tools["ToolNode\n(RAG, Naver 등)"]
+    Tools --> Chatbot
+
+    Chatbot --> END((End))
+```
+
+### 5. 응답 구성 및 반환
 - 챗봇 에이전트는 데이터베이스, 벡터DB, 외부 API에서 받은 정보를 통합해 응답을 생성 후 Django 서버를 통해 다시 사용자에게 전달
 
-### 5. 사용자 응답 수신 (Django Server → User)
+### 6. 사용자 응답 수신 (Django Server → User)
 - 사용자는 웹 화면에서 응답 메시지을 실시간으로 확인
 
 ---
