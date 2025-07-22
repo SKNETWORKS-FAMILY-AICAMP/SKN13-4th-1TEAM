@@ -1,6 +1,77 @@
-# 시스템 아키텍처 (SKN13-4TH-1TEAM)
+<h1 style="all:unset; font-size:2em;">시스템 아키텍처 (SKN13-4TH-1TEAM)</h1>
 
----
+
+### 팀 소개
+ ### 팀 명 : 지금 서울
+### 🗓️ 개발 기간
+> 2025.07.21 ~ 2025.07.22
+### 👥 팀원
+
+<table width="100%">
+  <tr>
+    <td align="center" width="20%">
+      <img src="image/남궁건우_사진.png" width="150"/>
+    </td>
+    <td align="center" width="20%">
+      <img src="image/우지훈_사진.png" width="150"/>
+    </td>
+    <td align="center" width="20%">
+      <img src="image/이명인_사진.png" width="150"/>
+    </td>
+    <td align="center" width="20%">
+      <img src="image/홍채우_사진.png" width="150"/>
+    </td>
+    <td align="center" width="20%">
+      <img src="image/김승호_사진.png" width="150"/>
+    </td>
+  <tr>
+
+  <tr>
+    <td align="center" width="20%">
+      <b>남궁건우</b>
+    </td>
+    <td align="center" width="20%">
+      <b>우지훈</b>
+    </td>
+    <td align="center" width="20%">
+      <b>이명인</b>
+    </td>
+    <td align="center" width="20%">
+      <b>홍채우</b>
+    </td>
+    <td align="center" width="20%">
+      <b>김승호</b>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center" width="20%">
+      <a href="https://github.com/NGGW519">
+        <img src="https://img.shields.io/badge/GitHub-NGGW519-1F1F1F?logo=github" alt="남궁건우 GitHub"/>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <a href="https://github.com/WooZhoon">
+        <img src="https://img.shields.io/badge/GitHub-WooZhoon-1F1F1F?logo=github" alt="우지훈 GitHub"/>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <a href="https://github.com/leemyeongin2416">
+        <img src="https://img.shields.io/badge/GitHub-leemyeongin2416-1F1F1F?logo=github" alt="이명인 GitHub"/>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <a href="https://github.com/HCWDDD">
+        <img src="https://img.shields.io/badge/GitHub-HCWDDD-1F1F1F?logo=github" alt="홍채우 GitHub"/>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <a href="https://github.com/qqqppma">
+        <img src="https://img.shields.io/badge/GitHub-qqqppma-1F1F1F?logo=github" alt="김승호 GitHub"/>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ## 1. 전체 구조 개요
 
