@@ -216,6 +216,8 @@
 
 # 5. UI 시안
 
+![UI 시안](chatbot_flow_slides_final.gif)
+
 ---
 
 # 6. 전체 구조 개요
