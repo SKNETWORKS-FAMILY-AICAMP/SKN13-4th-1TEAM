@@ -123,12 +123,12 @@ graph TD
 
 | 구분         | 주요 기술/서비스                      |
 | ------------ | ------------------------------------- |
-| 백엔드       | Django, Python 3.x                    |
-| 프론트엔드   | Django Template, JS, CSS              |
-| 챗봇/AI      | LangChain, LangGraph, OpenAI API      |
-| DB           | MySQL, ChromaDB                       |
-| 크롤링/ETL   | Selenium, BeautifulSoup, Pandas       |
-| 배포/운영     | Linux(Ubuntu), AWS, .env 환경변수      |
+| 백엔드       | ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+| 프론트엔드   | ![Django Template](https://img.shields.io/badge/Django%20Template-092E20?style=for-the-badge) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+| 챗봇/AI      | ![LangChain](https://img.shields.io/badge/LangChain-000000?style=for-the-badge&logo=LangChain&logoColor=white) ![LangGraph](https://img.shields.io/badge/LangGraph-4B0082?style=for-the-badge) ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
+| DB           | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![ChromaDB](https://img.shields.io/badge/ChromaDB-FF8C00?style=for-the-badge)
+| 크롤링/ETL   | ![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white) ![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup-4B0082?style=for-the-badge) ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+| 배포/운영     | ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white) ![dotenv](https://img.shields.io/badge/.env-8B0000?style=for-the-badge)
 
 ---
 
