@@ -412,4 +412,8 @@ graph TD
 
 # 12. 기타 참고
 - 상세 UI/UX, 데이터 파이프라인, 정책 보고서 자동화 등은 Drafts/ 폴더 내 문서 참고
-- 실제 배포 시 requirements.txt, .env, DB 마이그레이션 등 필수 적용 
+- 실제 배포 시 requirements.txt, .env, DB 마이그레이션 등 필수 적용
+
+---
+
+http://18.223.183.174/
