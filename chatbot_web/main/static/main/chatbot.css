@@ -55,13 +55,14 @@
 }
 
 #chatSearchInput {
-  flex-grow: 1;
-  border: 1px solid #ddd; /* 테두리 색상 변경 */
-  border-radius: 20px; /* 더 둥글게 */
-  padding: 8px 15px; /* 패딩 증가 */
-  font-size: 1rem; /* 폰트 크기 조정 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  transition: all 0.3s ease; /* 부드러운 전환 */
+  all: unset;
+  flex-grow: 1 !important;
+  border: 1px solid #ddd !important;/* 테두리 색상 변경 */
+  border-radius: 20px !important; /* 더 둥글게 */
+  padding: 8px 15px !important; /* 패딩 증가 */
+  font-size: 1rem !important; /* 폰트 크기 조정 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* 그림자 효과 */
+  transition: all 0.3s ease !important; /* 부드러운 전환 */
 }
 
 #chatSearchInput:focus {
@@ -71,6 +72,7 @@
 }
 
 #chatSearchForm button {
+  all: unset;
   background: #007bff;
   color: white;
   border: none;
